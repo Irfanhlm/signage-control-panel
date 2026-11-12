@@ -4,14 +4,20 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:web": "next dev",
+    "dev:server": "npm --prefix server run dev",
     "build": "next build",
+    "build:server": "npm --prefix server run build",
     "start": "next start",
+    "start:server": "npm --prefix server run start",
+    "test:db": "npm --prefix server run test:db",
     "lint": "eslint"
   },
   "dependencies": {
     "next": "16.4.6",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "socket.io-client": "^4.8.4"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "4.3.3",
