@@ -140,6 +140,7 @@ Pada root `signage-control-panel`:
 - `npm run dev:web` / `npm run dev`: Menjalankan Next.js development server
 - `npm run dev:server`: Menjalankan backend server dalam watch mode (`tsx`)
 - `npm run test:db`: Menguji koneksi backend ke database Supabase
+- `npm run test:api`: Menjalankan suite pengujian otomatis REST API (32 test cases)
 - `npm run build`: Membangun production build Next.js
 - `npm run build:server`: Mengkompilasi TypeScript backend (`tsc`)
 - `npm run start`: Menjalankan production server Next.js

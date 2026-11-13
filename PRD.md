@@ -283,7 +283,7 @@ Contoh body untuk konten gambar:
 
 | Method | Endpoint | Fungsi |
 |---|---|---|
-| PUT | `/api/devices/:id/content` | Menetapkan atau mengganti konten aktif perangkat. |
+| PUT | `/api/devices/:id/content` | Menetapkan, mengganti, atau mencabut konten aktif perangkat. |
 | GET | `/api/devices/:id/current-content` | Mengambil konten aktif untuk initial load player. |
 
 Contoh body `PUT /api/devices/:id/content`:
@@ -293,6 +293,7 @@ Contoh body `PUT /api/devices/:id/content`:
   "contentId": "UUID-CONTENT"
 }
 ```
+*Catatan:* `contentId` juga dapat bernilai `null` (`{ "contentId": null }`) apabila admin ingin mengosongkan/mencabut konten aktif dari perangkat. Parameter `:id` pada endpoint mendukung pencarian via UUID `id` maupun nama unik perangkat (`SIGN-001`).
 
 Endpoint ini merupakan kebutuhan pendukung agar konten dapat ditautkan ke perangkat. Perubahan harus disimpan dahulu ke database, baru kemudian event Socket.IO dikirim.
 
@@ -347,11 +348,13 @@ Nama event harus konsisten antara frontend dan backend. Payload event perlu memi
 ### 11.3 Heartbeat dan status perangkat
 
 Konfigurasi awal yang disarankan:
-- Player mengirim heartbeat setiap **10 detik**.
+- Player mengirim heartbeat setiap **10 detik** via event `device:heartbeat`.
 - Perangkat dianggap offline jika tidak ada heartbeat selama **30 detik**.
 - Backend memperbarui `last_seen` saat heartbeat diterima.
-- Status online/offline ditentukan backend, bukan input manual dari dashboard.
-- Ketika ada beberapa socket untuk satu `deviceId`, status tetap `online` selama setidaknya satu koneksi masih aktif.
+- Status online/offline ditentukan backend, bukan input manual dari dashboard:
+  - Backend mengelola state koneksi aktif di memori (*in-memory registry*): `Map<deviceId, Set<socketId>>`.
+  - Ketika ada beberapa socket untuk satu `deviceId`, status tetap `online` selama setidaknya satu koneksi masih aktif.
+  - Backend menjalankan *background timer sweeper* berkala (setiap 10 detik) untuk mendeteksi perangkat yang `now - last_seen > 30000ms`, mengubah statusnya menjadi `offline` di database, dan memancarkan event `device:status` ke dashboard.
 
 Nilai interval dan timeout dapat diubah melalui konfigurasi environment.
 

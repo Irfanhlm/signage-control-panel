@@ -41,10 +41,10 @@ const io = initSocketIO(httpServer);
 
 httpServer.listen(config.port, () => {
   console.log(`===============================================`);
-  console.log(`🚀 Digital Signage Backend Server running`);
-  console.log(`📡 HTTP Server: http://localhost:${config.port}`);
-  console.log(`🔌 Socket.IO ready on port ${config.port}`);
-  console.log(`🌐 Allowed Web Origin: ${config.webOrigin}`);
+  console.log(`Digital Signage Backend Server running`);
+  console.log(`HTTP Server: http://localhost:${config.port}`);
+  console.log(`Socket.IO ready on port ${config.port}`);
+  console.log(`Allowed Web Origin: ${config.webOrigin}`);
   console.log(`===============================================`);
 });
 

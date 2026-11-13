@@ -84,6 +84,8 @@ export interface InterServerEvents {
 
 export interface SocketData {
   deviceId?: string;
+  deviceName?: string;
+  isAdmin?: boolean;
 }
 
 /**
@@ -91,6 +93,6 @@ export interface SocketData {
  * Useful for resolving player and device lookup by either UUID or device name (e.g. SIGN-001).
  */
 export function isUuid(id: string): boolean {
-  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
   return uuidRegex.test(id);
 }

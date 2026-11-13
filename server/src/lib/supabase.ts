@@ -1,3 +1,4 @@
+
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { config } from '../config/index.js';
 
@@ -9,14 +10,26 @@ export function getSupabase(): SupabaseClient {
   }
 
   if (!config.supabaseUrl || !config.supabaseServiceRoleKey) {
-    console.warn(
-      '[Supabase] Warning: SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY is not configured yet. Database operations will fail until configured.'
+    throw new Error(
+      'SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY is not configured.'
+    );
+  }
+
+  const url = new URL(config.supabaseUrl);
+
+  if (
+    url.protocol !== 'https:' ||
+    !url.hostname.endsWith('.supabase.co') ||
+    url.pathname !== '/'
+  ) {
+    throw new Error(
+      'Invalid SUPABASE_URL. Use the base Project URL without /rest/v1.'
     );
   }
 
   supabaseClient = createClient(
-    config.supabaseUrl || 'https://placeholder.supabase.co',
-    config.supabaseServiceRoleKey || 'placeholder-key',
+    config.supabaseUrl,
+    config.supabaseServiceRoleKey,
     {
       auth: {
         persistSession: false,
@@ -27,4 +40,3 @@ export function getSupabase(): SupabaseClient {
 
   return supabaseClient;
 }
-

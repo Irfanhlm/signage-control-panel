@@ -8,7 +8,10 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "type-check": "tsc --noEmit",
-    "test:db": "tsx src/scripts/testConnection.ts"
+    "test:db": "tsx src/scripts/testConnection.ts",
+    "test:api": "tsx src/scripts/testApiSuite.ts",
+    "test:socket": "tsx src/scripts/testSocketSuite.ts",
+    "test:player": "tsx src/scripts/testPlayerPhase6.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.1",
@@ -21,8 +24,8 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/node": "^20.17.19",
+    "socket.io-client": "^4.8.4",
     "tsx": "^4.19.3",
     "typescript": "^5.7.3"
   }
 }
-

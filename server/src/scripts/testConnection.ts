@@ -5,11 +5,18 @@ async function testConnection() {
   console.log('--- Pengujian Koneksi Database Supabase ---');
   console.log(`URL: ${config.supabaseUrl || '(belum diisi)'}`);
   console.log(`Service Role Key: ${config.supabaseServiceRoleKey ? '***TERSEDIA***' : '(belum diisi)'}`);
+  console.log('URL Debug:', {
+    url: config.supabaseUrl,
+    pathname: config.supabaseUrl
+      ? new URL(config.supabaseUrl).pathname
+      : 'EMPTY',
+  });
 
   if (!config.supabaseUrl || !config.supabaseServiceRoleKey) {
     console.error('\n❌ GAGAL: SUPABASE_URL atau SUPABASE_SERVICE_ROLE_KEY belum diisi pada file server/.env');
     console.error('Silakan isi variabel tersebut terlebih dahulu dan jalankan script ini kembali.');
     process.exit(1);
+
   }
 
   const supabase = getSupabase();
@@ -24,7 +31,7 @@ async function testConnection() {
     if (devError) {
       throw new Error(`Gagal membaca tabel 'devices': ${devError.message}`);
     }
-    console.log(`✅ Tabel "devices" terhubung! Ditemukan ${devices.length} record.`);
+    console.log(`Tabel "devices" terhubung!✅ Ditemukan ${devices.length} record.`);
 
     console.log('\n2. Memeriksa tabel "contents"...');
     const { data: contents, error: conError } = await supabase
@@ -35,9 +42,9 @@ async function testConnection() {
     if (conError) {
       throw new Error(`Gagal membaca tabel 'contents': ${conError.message}`);
     }
-    console.log(`✅ Tabel "contents" terhubung! Ditemukan ${contents.length} record.`);
+    console.log(`Tabel "contents" terhubung!✅ Ditemukan ${contents.length} record.`);
 
-    console.log('\n🎉 SEMUA PENGUJIAN DATABASE BERHASIL!');
+    console.log('\nSEMUA PENGUJIAN DATABASE BERHASIL!🎉');
     console.log('Database Supabase siap digunakan untuk Tahap 3 (REST API) & Tahap 4 (Socket.IO).');
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);

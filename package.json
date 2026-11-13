@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "concurrently -k -p \"[{name}]\" -n \"NEXT,EXPRESS\" -c \"cyan.bold,magenta.bold\" \"npm run dev:web\" \"npm run dev:server\"",
     "dev:web": "next dev",
     "dev:server": "npm --prefix server run dev",
     "build": "next build",
@@ -11,9 +11,14 @@
     "start": "next start",
     "start:server": "npm --prefix server run start",
     "test:db": "npm --prefix server run test:db",
+    "test:api": "npm --prefix server run test:api",
+    "test:socket": "npm --prefix server run test:socket",
+    "test:player": "npm --prefix server run test:player",
+    "test:all": "npm run test:api && npm run test:socket && npm run test:player",
     "lint": "eslint"
   },
   "dependencies": {
+    "lucide-react": "^1.72.0",
     "next": "16.4.6",
     "react": "19.3.0",
     "react-dom": "19.3.0",
@@ -24,6 +29,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "concurrently": "^10.0.7",
     "eslint": "^9",
     "eslint-config-next": "16.4.6",
     "tailwindcss": "4.3.3",

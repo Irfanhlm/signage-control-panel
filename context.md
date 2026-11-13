@@ -533,36 +533,36 @@ Kerjakan secara bertahap. Selesaikan dan verifikasi satu tahap sebelum melanjutk
 
 ### REST API dan database
 
-- [ ] Create/list/detail/update/delete device berhasil.
-- [ ] Field lokasi tersimpan dan ditampilkan.
-- [ ] Create/list/detail/update/delete content berhasil.
-- [ ] Data tersimpan di Supabase dan tetap tersedia setelah server restart.
-- [ ] Request tidak valid menghasilkan error yang jelas.
-- [ ] ID yang tidak ditemukan menghasilkan `404`.
-- [ ] Assignment dengan device atau content yang tidak valid ditolak.
-- [ ] Penghapusan konten aktif menangani referensi perangkat dengan benar.
+- [x] Create/list/detail/update/delete device berhasil.
+- [x] Field lokasi tersimpan dan ditampilkan.
+- [x] Create/list/detail/update/delete content berhasil.
+- [x] Data tersimpan di Supabase dan tetap tersedia setelah server restart.
+- [x] Request tidak valid menghasilkan error yang jelas.
+- [x] ID yang tidak ditemukan menghasilkan `404`.
+- [x] Assignment dengan device atau content yang tidak valid ditolak.
+- [x] Penghapusan konten aktif menangani referensi perangkat dengan benar.
 
 ### Socket.IO
 
-- [ ] Player dengan `deviceId` valid dapat terhubung.
-- [ ] Player dengan `deviceId` tidak valid ditolak.
-- [ ] Player bergabung ke room perangkat yang benar.
-- [ ] Heartbeat memperbarui `last_seen`.
-- [ ] Timeout mengubah status menjadi offline.
-- [ ] Satu socket disconnect tidak membuat device offline jika socket lain masih aktif.
-- [ ] Update konten hanya diterima player target.
-- [ ] Reconnect mengambil ulang konten aktif.
+- [x] Player dengan `deviceId` valid dapat terhubung.
+- [x] Player dengan `deviceId` tidak valid ditolak.
+- [x] Player bergabung ke room perangkat yang benar.
+- [x] Heartbeat memperbarui `last_seen`.
+- [x] Timeout mengubah status menjadi offline.
+- [x] Satu socket disconnect tidak membuat device offline jika socket lain masih aktif.
+- [x] Update konten hanya diterima player target.
+- [x] Reconnect mengambil ulang konten aktif (diuji pada Tahap 6: Signage Player).
 
 ### UI dan demonstrasi
 
-- [ ] Dashboard menampilkan jumlah dan status perangkat yang benar.
-- [ ] Tabel Devices menampilkan nama, lokasi, status, dan `last_seen`.
-- [ ] CRUD dapat dilakukan dari dashboard.
-- [ ] Player menampilkan konten awal.
-- [ ] Player memperbarui konten tanpa refresh.
-- [ ] Tiga player virtual dapat berjalan bersamaan pada satu laptop.
-- [ ] Loading, empty, error, dan disconnected state ditangani.
-- [ ] Tidak ada secret backend di browser bundle atau repository.
+- [x] Dashboard menampilkan jumlah dan status perangkat yang benar.
+- [x] Tabel Devices menampilkan nama, lokasi, status, dan `last_seen`.
+- [x] CRUD dapat dilakukan dari dashboard.
+- [x] Player menampilkan konten awal (Tahap 6).
+- [x] Player memperbarui konten tanpa refresh (Tahap 6).
+- [ ] Tiga player virtual dapat berjalan bersamaan pada satu laptop (Tahap 7).
+- [x] Loading, empty, error, dan disconnected state ditangani.
+- [x] Tidak ada secret backend di browser bundle atau repository.
 
 ## 14. Batasan dan Hal yang Ditunda
 

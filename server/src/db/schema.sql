@@ -62,7 +62,13 @@ CREATE INDEX IF NOT EXISTS idx_devices_status ON devices(status);
 CREATE INDEX IF NOT EXISTS idx_devices_active_content ON devices(active_content_id);
 CREATE INDEX IF NOT EXISTS idx_contents_tipe ON contents(tipe);
 
--- 7. Data Awal / Seed Demo (Sesuai PRD Bagian 13)
+-- 7. Row Level Security (RLS)
+-- Backend Node.js menggunakan service_role key yang otomatis membypass RLS.
+-- Mengaktifkan RLS mengamankan database dari akses langsung publik (anon key) di luar REST API.
+ALTER TABLE contents ENABLE ROW LEVEL SECURITY;
+ALTER TABLE devices ENABLE ROW LEVEL SECURITY;
+
+-- 8. Data Awal / Seed Demo (Sesuai PRD Bagian 13)
 -- Insert 3 konten contoh
 INSERT INTO contents (id, judul, tipe, payload, url)
 VALUES
