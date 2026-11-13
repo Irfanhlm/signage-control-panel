@@ -24,7 +24,6 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // Modal & Toast state
   const [assignTargetDevice, setAssignTargetDevice] = useState<Device | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -33,7 +32,6 @@ export default function DashboardPage() {
     setTimeout(() => setToastMessage(null), 4000);
   };
 
-  // Initial load
   useEffect(() => {
     let ignore = false;
     Promise.all([getDevices(), getContents()])
@@ -73,7 +71,6 @@ export default function DashboardPage() {
     }
   };
 
-  // Real-time status updates via Socket.IO
   const handleDeviceStatusChange = useCallback((event: DeviceStatusEvent) => {
     setDevices((prev) =>
       prev.map((d) =>
@@ -86,7 +83,6 @@ export default function DashboardPage() {
 
   const { isConnected: isSocketConnected } = useAdminSocket(handleDeviceStatusChange);
 
-  // Content assignment handler
   const handleAssignContent = async (deviceId: string, contentId: string | null) => {
     const res = await assignDeviceContent(deviceId, contentId);
     setDevices((prev) =>
@@ -107,7 +103,6 @@ export default function DashboardPage() {
     );
   };
 
-  // Metrics
   const totalDevices = devices.length;
   const onlineDevices = devices.filter((d) => d.status === 'online').length;
   const offlineDevices = totalDevices - onlineDevices;
@@ -117,7 +112,6 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-white text-gray-900 flex flex-col font-sans">
       <Navbar isSocketConnected={isSocketConnected} />
 
-      {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 p-4 rounded-md bg-gray-900 text-white flex items-center gap-3 font-semibold text-sm">
           <Sparkles className="w-5 h-5 text-emerald-400 shrink-0" />
@@ -126,7 +120,6 @@ export default function DashboardPage() {
       )}
 
       <section className="bg-blue-500 text-white relative overflow-hidden">
-
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="space-y-3">
@@ -134,7 +127,7 @@ export default function DashboardPage() {
                 Signage Control Panel
               </h1>
               <p className="text-blue-100 text-base max-w-2xl font-medium">
-                Pantau status perangkat secara realtime simulasi 3 player virtual.
+                Pantau status perangkat secara realtime
               </p>
             </div>
 
@@ -159,9 +152,7 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
-        {/* Error notification */}
         {errorMessage && (
           <div className="p-4 bg-red-100 text-red-900 rounded-md font-semibold text-sm flex items-center justify-between">
             <span>{errorMessage}</span>
@@ -174,9 +165,7 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* 4 Multi-Color Metric Cards (Color as Structure) */}
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Total Devices: Blue tint */}
           <div className="flat-card p-6 bg-blue-50 text-gray-900 flex flex-col justify-between group cursor-pointer hover:bg-blue-100">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-wider text-blue-700">
@@ -191,7 +180,6 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Online Devices: Emerald tint */}
           <div className="flat-card p-6 bg-emerald-50 text-gray-900 flex flex-col justify-between group cursor-pointer hover:bg-emerald-100">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-wider text-emerald-700">
@@ -206,7 +194,6 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Offline Devices: Gray 100 */}
           <div className="flat-card p-6 bg-gray-100 text-gray-900 flex flex-col justify-between group cursor-pointer hover:bg-gray-200">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-wider text-gray-600">
@@ -221,7 +208,6 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Total Contents: Amber tint */}
           <div className="flat-card p-6 bg-amber-50 text-gray-900 flex flex-col justify-between group cursor-pointer hover:bg-amber-100">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-wider text-amber-700">
@@ -237,7 +223,6 @@ export default function DashboardPage() {
           </div>
         </section>
 
-        {/* Live Device Table Section with Gray 100 background */}
         <section className="bg-gray-100 rounded-lg p-6 sm:p-8 space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
@@ -254,7 +239,6 @@ export default function DashboardPage() {
             </Link>
           </div>
 
-          {/* Table */}
           <div
             tabIndex={0}
             role="region"
@@ -296,7 +280,6 @@ export default function DashboardPage() {
                         key={device.id}
                         className="hover:bg-blue-50/50 transition-colors duration-150"
                       >
-                        {/* Nama */}
                         <td className="py-4 px-5">
                           <div className="flex items-center gap-2">
                             <span className="font-extrabold text-gray-900">
@@ -313,24 +296,20 @@ export default function DashboardPage() {
                           </div>
                         </td>
 
-                        {/* Lokasi */}
                         <td className="py-4 px-5 font-semibold text-gray-700">
                           {device.lokasi}
                         </td>
 
-                        {/* Status */}
                         <td className="py-4 px-5">
                           <DeviceStatusBadge status={device.status} size="sm" />
                         </td>
 
-                        {/* Last Seen */}
                         <td className="py-4 px-5 text-gray-600 text-xs font-medium">
                           <span title={formatDateTime(device.last_seen)}>
                             {formatTimeAgo(device.last_seen)}
                           </span>
                         </td>
 
-                        {/* Active Content */}
                         <td className="py-4 px-5">
                           {activeContent ? (
                             <div className="flex items-center gap-2">
@@ -346,7 +325,6 @@ export default function DashboardPage() {
                           )}
                         </td>
 
-                        {/* Aksi */}
                         <td className="py-4 px-5 text-right">
                           <div className="flex items-center justify-end gap-2">
                             <button
@@ -374,7 +352,6 @@ export default function DashboardPage() {
           </div>
         </section>
 
-        {/* Demo Simulation Box with Emerald Color Block */}
         <section className="bg-emerald-500 text-white rounded-lg p-8 relative overflow-hidden">
           <div className="absolute -bottom-16 -right-16 w-64 h-64 rounded-full bg-white/10 pointer-events-none" />
 
@@ -424,7 +401,6 @@ export default function DashboardPage() {
         </section>
       </main>
 
-      {/* Modal: Assign Content */}
       <AssignContentDialog
         isOpen={!!assignTargetDevice}
         device={assignTargetDevice}

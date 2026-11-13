@@ -19,7 +19,6 @@ export function Navbar({ isSocketConnected }: NavbarProps) {
   return (
     <header className="bg-white border-b-2 border-gray-200 sticky top-0 z-30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-        {/* Brand */}
         <div className="flex items-center gap-8">
           <Link href="/dashboard" className="flex items-center gap-3.5 group">
             <div>
@@ -32,7 +31,6 @@ export function Navbar({ isSocketConnected }: NavbarProps) {
             </div>
           </Link>
 
-          {/* Nav Links */}
           <nav className="hidden md:flex items-center gap-2">
             {navLinks.map((link) => {
               const isActive = pathname === link.href || pathname.startsWith(link.href + '/');
@@ -52,9 +50,7 @@ export function Navbar({ isSocketConnected }: NavbarProps) {
           </nav>
         </div>
 
-        {/* Right Section */}
         <div className="flex items-center gap-3">
-          {/* Socket Indicator */}
           {typeof isSocketConnected !== 'undefined' && (
             <div
               className={`hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md text-xs font-bold uppercase tracking-wider transition-all duration-200 ${isSocketConnected
@@ -68,38 +64,9 @@ export function Navbar({ isSocketConnected }: NavbarProps) {
               <span>{isSocketConnected ? 'Live' : 'Connecting...'}</span>
             </div>
           )}
-
-          {/* Quick Player Links */}
-          <div className="flex items-center bg-gray-100 p-1.5 rounded-lg text-xs font-semibold">
-            <span className="text-gray-500 px-2 font-bold hidden lg:inline">
-              Simulasi Player:
-            </span>
-            <Link
-              href="/player/SIGN-001"
-              target="_blank"
-              className="px-3 py-1.5 rounded-md text-gray-800 hover:bg-blue-500 hover:text-white transition-all duration-200 font-bold"
-            >
-              #1 Lobby
-            </Link>
-            <Link
-              href="/player/SIGN-002"
-              target="_blank"
-              className="px-3 py-1.5 rounded-md text-gray-800 hover:bg-blue-500 hover:text-white transition-all duration-200 font-bold"
-            >
-              #2 Warehouse
-            </Link>
-            <Link
-              href="/player/SIGN-003"
-              target="_blank"
-              className="px-3 py-1.5 rounded-md text-gray-800 hover:bg-blue-500 hover:text-white transition-all duration-200 font-bold"
-            >
-              #3 Meeting Room
-            </Link>
-          </div>
         </div>
       </div>
 
-      {/* Mobile Nav */}
       <div className="md:hidden bg-gray-50 border-t border-gray-200 px-4 py-2 flex items-center justify-around">
         {navLinks.map((link) => {
           const isActive = pathname === link.href || pathname.startsWith(link.href + '/');

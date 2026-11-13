@@ -3,7 +3,6 @@ import * as deviceService from '../services/device.service.js';
 import { ApiResponse, CreateDeviceDto, UpdateDeviceDto, AssignContentPayload, isUuid } from '../types/index.js';
 import { getIO } from '../socket/index.js';
 
-// GET /api/devices
 export async function listDevices(_req: Request, res: Response<ApiResponse>, next: NextFunction) {
   try {
     const devices = await deviceService.listDevices();
@@ -17,7 +16,6 @@ export async function listDevices(_req: Request, res: Response<ApiResponse>, nex
   }
 }
 
-// POST /api/devices
 export async function createDevice(req: Request, res: Response<ApiResponse>, next: NextFunction) {
   try {
     const { nama, lokasi } = req.body as CreateDeviceDto;
@@ -50,7 +48,6 @@ export async function createDevice(req: Request, res: Response<ApiResponse>, nex
   }
 }
 
-// GET /api/devices/:id
 export async function getDevice(req: Request, res: Response<ApiResponse>, next: NextFunction) {
   try {
     const device = await deviceService.getDeviceById(req.params.id);
@@ -64,7 +61,6 @@ export async function getDevice(req: Request, res: Response<ApiResponse>, next: 
   }
 }
 
-// PATCH /api/devices/:id
 export async function updateDevice(req: Request, res: Response<ApiResponse>, next: NextFunction) {
   try {
     const { nama, lokasi } = req.body as UpdateDeviceDto;
@@ -105,7 +101,6 @@ export async function updateDevice(req: Request, res: Response<ApiResponse>, nex
   }
 }
 
-// DELETE /api/devices/:id
 export async function deleteDevice(req: Request, res: Response<ApiResponse>, next: NextFunction) {
   try {
     const deleted = await deviceService.deleteDevice(req.params.id);
@@ -122,12 +117,10 @@ export async function deleteDevice(req: Request, res: Response<ApiResponse>, nex
   }
 }
 
-// PUT /api/devices/:id/content
 export async function assignContent(req: Request, res: Response<ApiResponse>, next: NextFunction) {
   try {
     const { contentId } = req.body as AssignContentPayload;
 
-    // contentId must be a string UUID or null
     if (contentId !== null) {
       if (typeof contentId !== 'string' || !isUuid(contentId)) {
         res.status(400).json({
@@ -141,19 +134,16 @@ export async function assignContent(req: Request, res: Response<ApiResponse>, ne
 
     const result = await deviceService.assignContent(req.params.id, contentId);
 
-    // Emit real-time content update to the target device's player room
     try {
       const io = getIO();
       const deviceRoom = `device:${result.device.id}`;
       io.to(deviceRoom).emit('content:updated', result.content);
-      // Also notify admin dashboard
       io.to('admin').emit('device:status', {
         deviceId: result.device.id,
         status: result.device.status,
         last_seen: result.device.last_seen,
       });
     } catch (socketErr) {
-      // Socket.IO emit failure should not fail the REST response
       console.error('[assignContent] Socket.IO emit error:', socketErr);
     }
 
@@ -177,7 +167,6 @@ export async function assignContent(req: Request, res: Response<ApiResponse>, ne
   }
 }
 
-// GET /api/devices/:id/current-content
 export async function getCurrentContent(req: Request, res: Response<ApiResponse>, next: NextFunction) {
   try {
     const result = await deviceService.getCurrentContent(req.params.id);
@@ -197,4 +186,3 @@ export async function getCurrentContent(req: Request, res: Response<ApiResponse>
     next(err);
   }
 }
-

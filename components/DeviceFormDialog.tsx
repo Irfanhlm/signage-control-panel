@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Device, CreateDeviceDto, UpdateDeviceDto } from '@/lib/types';
-import { MonitorPlay, X, Check } from 'lucide-react';
+import { X, Check } from 'lucide-react';
 
 interface DeviceFormDialogProps {
   isOpen: boolean;
@@ -97,9 +97,6 @@ function DeviceFormInner({ device, onClose, onSubmit }: DeviceFormInnerProps) {
     <form onSubmit={handleSubmit} className="p-8 space-y-6">
       <div className="flex items-center justify-between pb-5 border-b-2 border-gray-100">
         <div className="flex items-center gap-3">
-          <div className="h-12 w-12 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center">
-            <MonitorPlay className="w-6 h-6 stroke-[2.5]" />
-          </div>
           <div>
             <h3
               id="device-dialog-title"
@@ -107,9 +104,6 @@ function DeviceFormInner({ device, onClose, onSubmit }: DeviceFormInnerProps) {
             >
               {isEdit ? 'Ubah Data Perangkat' : 'Tambah Perangkat Baru'}
             </h3>
-            <p className="text-xs text-gray-500 font-semibold mt-0.5">
-              Kelola nama unik dan lokasi fisik layar
-            </p>
           </div>
         </div>
         <button

@@ -11,7 +11,6 @@ export interface Device {
   active_content_id: string | null;
   created_at?: string;
   updated_at?: string;
-  // Optional expanded relation
   active_content?: Content | null;
 }
 
@@ -37,7 +36,6 @@ export interface ApiResponse<T = unknown> {
   errors?: Record<string, string>;
 }
 
-// DTOs
 export interface CreateDeviceDto {
   nama: string;
   lokasi: string;
@@ -62,12 +60,10 @@ export interface UpdateContentDto {
   url?: string | null;
 }
 
-// Allows string UUID or null to unassign content
 export interface AssignContentPayload {
   contentId: string | null;
 }
 
-// Socket.IO event payloads
 export interface ServerToClientEvents {
   'content:updated': (content: Content | null) => void;
   'device:status': (statusData: { deviceId: string; status: DeviceStatus; last_seen: string | null }) => void;
@@ -88,10 +84,6 @@ export interface SocketData {
   isAdmin?: boolean;
 }
 
-/**
- * Utility helper to determine if an identifier string is a standard UUID.
- * Useful for resolving player and device lookup by either UUID or device name (e.g. SIGN-001).
- */
 export function isUuid(id: string): boolean {
   const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
   return uuidRegex.test(id);

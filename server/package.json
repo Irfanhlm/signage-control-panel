@@ -7,11 +7,7 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "type-check": "tsc --noEmit",
-    "test:db": "tsx src/scripts/testConnection.ts",
-    "test:api": "tsx src/scripts/testApiSuite.ts",
-    "test:socket": "tsx src/scripts/testSocketSuite.ts",
-    "test:player": "tsx src/scripts/testPlayerPhase6.ts"
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.1",

@@ -119,30 +119,50 @@ cd server && npm install && cd ..
 
 ### 4. Menjalankan Server Pengembangan
 
-#### Terminal 1 — Backend (Express + Socket.IO)
+Jalankan kedua server sekaligus dari root hanya dengan satu perintah:
 ```bash
-npm run dev:server
+npm run dev
 ```
-Backend berjalan pada: **`http://localhost:3001`**  
-Endpoint health check: **`http://localhost:3001/api/health`**
+Perintah ini akan menjalankan Next.js di port **3000** dan backend Express + Socket.IO di port **3001** secara bersamaan dengan label log berwarna yang jelas.
 
-#### Terminal 2 — Frontend (Next.js)
-```bash
-npm run dev:web
-```
-Frontend berjalan pada: **`http://localhost:3000`**
+Atau jika ingin menjalankan secara terpisah:
+- Terminal 1 (Backend): `npm run dev:server` (http://localhost:3001)
+- Terminal 2 (Frontend): `npm run dev:web` (http://localhost:3000)
 
 ---
 
-## 🧪 Skrip Tersedia
+## 🖥 Skenario Demonstrasi Multi-Player (Fase 7)
+
+Aplikasi dirancang khusus untuk demonstrasi lengkap pada satu laptop menggunakan tab browser:
+
+1. **Buka Admin Dashboard**:
+   - Tab 1: [http://localhost:3000/dashboard](http://localhost:3000/dashboard)
+2. **Buka 3 Layar Signage Virtual**:
+   - Tab 2 (Layar Lobby): [http://localhost:3000/player/SIGN-001](http://localhost:3000/player/SIGN-001)
+   - Tab 3 (Layar Gudang): [http://localhost:3000/player/SIGN-002](http://localhost:3000/player/SIGN-002)
+   - Tab 4 (Layar Ruang Meeting): [http://localhost:3000/player/SIGN-003](http://localhost:3000/player/SIGN-003)
+3. **Uji Real-Time Assignment**:
+   - Pada Dashboard, klik tombol **"Tetapkan Konten"** pada salah satu perangkat (misal `SIGN-001`).
+   - Pilih konten teks, gambar, atau video baru.
+   - Perhatikan bahwa layar `SIGN-001` langsung terupdate **tanpa refresh halaman**, sedangkan `SIGN-002` dan `SIGN-003` tidak terpengaruh (Room Isolation).
+4. **Uji Disconnect & Status**:
+   - Tutup Tab `SIGN-002`. Dalam waktu singkat statusnya di Dashboard berubah menjadi `Offline`.
+   - Buka kembali Tab `SIGN-002`. Status kembali menjadi `Online` dan konten aktif otomatis tersinkronisasi kembali.
+
+---
+
+## 🧪 Skrip Pengujian
 
 Pada root `signage-control-panel`:
-- `npm run dev:web` / `npm run dev`: Menjalankan Next.js development server
+- `npm run dev`: Menjalankan Next.js dan backend server secara bersamaan (`concurrently`)
+- `npm run dev:web`: Menjalankan Next.js development server
 - `npm run dev:server`: Menjalankan backend server dalam watch mode (`tsx`)
 - `npm run test:db`: Menguji koneksi backend ke database Supabase
-- `npm run test:api`: Menjalankan suite pengujian otomatis REST API (32 test cases)
+- `npm run test:api`: Menjalankan suite pengujian REST API (32 test cases)
+- `npm run test:socket`: Menjalankan suite pengujian real-time Socket.IO & Heartbeat (13 test cases)
+- `npm run test:player`: Menjalankan suite pengujian Signage Player (10 test cases)
+- `npm run test:demo`: Menjalankan simulasi demonstrasi multi-player serentak (8 test cases)
+- `npm run test:all`: Menjalankan **seluruh pengujian (63 test cases)** secara otomatis
 - `npm run build`: Membangun production build Next.js
 - `npm run build:server`: Mengkompilasi TypeScript backend (`tsc`)
-- `npm run start`: Menjalankan production server Next.js
-- `npm run start:server`: Menjalankan production backend (`node dist/index.js`)
-- `npm run lint`: Menjalankan ESLint
+- `npm run lint`: Menjalankan ESLint (0 errors, 0 warnings)

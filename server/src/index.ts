@@ -9,7 +9,6 @@ import { initSocketIO } from './socket/index.js';
 
 const app = express();
 
-// Middlewares
 app.use(
   cors({
     origin: config.webOrigin,
@@ -19,7 +18,6 @@ app.use(
 app.use(express.json());
 app.use(requestLogger);
 
-// Health check and root route
 app.get('/', (_req, res) => {
   res.json({
     name: 'Digital Signage Control Panel Backend',
@@ -29,13 +27,10 @@ app.get('/', (_req, res) => {
   });
 });
 
-// API Routes
 app.use('/api', apiRouter);
 
-// Global Error Handler
 app.use(errorHandler);
 
-// HTTP and Socket.IO Server
 const httpServer = http.createServer(app);
 const io = initSocketIO(httpServer);
 
@@ -49,4 +44,3 @@ httpServer.listen(config.port, () => {
 });
 
 export { app, httpServer, io };
-

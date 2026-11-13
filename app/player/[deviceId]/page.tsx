@@ -32,7 +32,6 @@ function PlayerContent() {
   const [notFound, setNotFound] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // Fetch current content on demand (e.g. retry or socket reconnect)
   const reloadContent = useCallback(
     (isBackground = false) => {
       if (!deviceId) return;
@@ -61,7 +60,6 @@ function PlayerContent() {
     [deviceId]
   );
 
-  // Initial load via asynchronous Promise without synchronous setState in effect
   useEffect(() => {
     if (!deviceId) return;
     let ignore = false;
@@ -92,13 +90,11 @@ function PlayerContent() {
     };
   }, [deviceId]);
 
-  // Socket.IO real-time connection
   const handleContentUpdated = useCallback((newContent: Content | null) => {
     setContent(newContent);
   }, []);
 
   const handleReconnect = useCallback(() => {
-    // On reconnect, re-fetch active content from database to guarantee state freshness
     reloadContent(true);
   }, [reloadContent]);
 
@@ -108,7 +104,6 @@ function PlayerContent() {
     onReconnect: handleReconnect,
   });
 
-  // ── 1. Loading State ──
   if (isLoading) {
     return (
       <main className="min-h-screen w-full flex flex-col items-center justify-center bg-gray-50 text-gray-900 p-6 select-none">
@@ -126,7 +121,6 @@ function PlayerContent() {
     );
   }
 
-  // ── 2. Device Not Found (404) State ──
   if (notFound) {
     return (
       <main className="min-h-screen w-full flex flex-col items-center justify-center bg-white text-gray-900 p-6 select-none">
@@ -165,7 +159,6 @@ function PlayerContent() {
     );
   }
 
-  // ── 3. General Error State ──
   if (errorMessage && !device) {
     return (
       <main className="min-h-screen w-full flex flex-col items-center justify-center bg-white text-gray-900 p-6 select-none">
@@ -189,19 +182,16 @@ function PlayerContent() {
     );
   }
 
-  // Device is guaranteed loaded from here onwards
   const resolvedDevice = device!;
 
   return (
     <main className="min-h-screen w-full flex flex-col bg-gray-950 text-white relative overflow-hidden">
-      {/* ── Demo Identity & Navigation Header Bar ── */}
       <PlayerDemoBanner
         device={resolvedDevice}
         content={content}
         isConnected={isConnected}
       />
 
-      {/* ── Offline Reconnection Warning Pill ── */}
       {!isConnected && (
         <div className="fixed top-14 inset-x-0 z-40 flex justify-center px-4 pointer-events-none animate-fadeIn">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500 text-gray-950 font-bold text-xs rounded-full shadow-none border-2 border-amber-400">
@@ -214,10 +204,8 @@ function PlayerContent() {
         </div>
       )}
 
-      {/* ── Signage Screen Content Area ── */}
       <section className="flex-1 w-full h-full pt-12 flex flex-col relative overflow-hidden">
         {content ? (
-          // Content Active: Render based on tipe
           <div className="w-full h-full flex-1 flex flex-col animate-fadeIn">
             {content.tipe === 'text' && <TextContentRenderer content={content} />}
             {content.tipe === 'image' && <ImageContentRenderer content={content} />}
@@ -225,7 +213,6 @@ function PlayerContent() {
             {content.tipe === 'url' && <UrlContentRenderer content={content} />}
           </div>
         ) : (
-          // Empty State: Device online but no content assigned
           <div className="w-full flex-1 flex flex-col items-center justify-center p-8 bg-gray-50 text-gray-900 select-none text-center relative">
             <div className="max-w-md w-full flex flex-col items-center">
               <div className="w-24 h-24 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-6">

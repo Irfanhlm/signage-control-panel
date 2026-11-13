@@ -3,8 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Device, Content } from '@/lib/types';
 import { ContentTypeBadge } from './ContentTypeBadge';
-import { DeviceStatusBadge } from './DeviceStatusBadge';
-import { Send, X, Ban } from 'lucide-react';
+import { X, Ban } from 'lucide-react';
 
 interface AssignContentDialogProps {
   isOpen: boolean;
@@ -102,12 +101,6 @@ function AssignContentInner({
     <form onSubmit={handleSubmit} className="p-8 space-y-6">
       <div className="flex items-center justify-between pb-5 border-b-2 border-gray-100">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs font-extrabold uppercase tracking-wider text-blue-600 bg-blue-50 px-2 py-0.5 rounded">
-              Real-Time Push
-            </span>
-            <DeviceStatusBadge status={device.status} size="sm" />
-          </div>
           <h3
             id="assign-dialog-title"
             className="text-xl font-extrabold text-gray-900 tracking-tight"
@@ -139,13 +132,11 @@ function AssignContentInner({
           Pilih Materi Tayang Aktif:
         </label>
 
-        {/* Unassign option */}
         <label
-          className={`flex items-start justify-between p-4 rounded-lg cursor-pointer transition-all duration-200 ${
-            selectedContentId === null
-              ? 'bg-blue-50 border-2 border-blue-500 scale-[1.02]'
-              : 'bg-gray-100 border-2 border-transparent hover:bg-gray-200'
-          }`}
+          className={`flex items-start justify-between p-4 rounded-lg cursor-pointer transition-all duration-200 ${selectedContentId === null
+            ? 'bg-blue-50 border-2 border-blue-500 scale-[1.02]'
+            : 'bg-gray-100 border-2 border-transparent hover:bg-gray-200'
+            }`}
         >
           <div className="flex items-center gap-3.5">
             <input
@@ -171,7 +162,6 @@ function AssignContentInner({
           </div>
         </label>
 
-        {/* Content options list */}
         <div className="max-h-64 overflow-y-auto space-y-2.5 pr-1">
           {contents.length === 0 ? (
             <div className="p-6 bg-gray-100 rounded-lg text-center text-sm font-medium text-gray-500">
@@ -183,11 +173,10 @@ function AssignContentInner({
               return (
                 <label
                   key={item.id}
-                  className={`flex items-start justify-between p-4 rounded-lg cursor-pointer transition-all duration-200 ${
-                    isSelected
-                      ? 'bg-blue-50 border-2 border-blue-500 scale-[1.02]'
-                      : 'bg-gray-50 border-2 border-transparent hover:bg-gray-100'
-                  }`}
+                  className={`flex items-start justify-between p-4 rounded-lg cursor-pointer transition-all duration-200 ${isSelected
+                    ? 'bg-blue-50 border-2 border-blue-500 scale-[1.02]'
+                    : 'bg-gray-50 border-2 border-transparent hover:bg-gray-100'
+                    }`}
                 >
                   <div className="flex items-start gap-3.5">
                     <input
@@ -224,9 +213,6 @@ function AssignContentInner({
       </div>
 
       <div className="flex items-center justify-between pt-5 border-t-2 border-gray-100">
-        <span className="text-xs text-gray-500 font-medium">
-          Target Room: <span className="font-bold text-gray-800">device:{device.nama}</span>
-        </span>
         <div className="flex items-center gap-3">
           <button
             type="button"
@@ -241,7 +227,6 @@ function AssignContentInner({
             disabled={isSubmitting}
             className="flex items-center gap-2 px-6 py-3 rounded-md bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold transition-all duration-200 hover:scale-105 disabled:opacity-50"
           >
-            <Send className="w-4 h-4 stroke-[2.5]" />
             <span>{isSubmitting ? 'Mengirim...' : 'Terapkan ke Player'}</span>
           </button>
         </div>

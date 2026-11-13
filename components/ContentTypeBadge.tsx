@@ -4,10 +4,6 @@ interface ContentTypeBadgeProps {
   tipe: ContentType;
 }
 
-/**
- * Flat Design Content Type Tag:
- * Distinct solid color blocks for clear visual differentiation without shadows.
- */
 export function ContentTypeBadge({ tipe }: ContentTypeBadgeProps) {
   const styles: Record<ContentType, { label: string; bg: string; text: string }> = {
     text: {

@@ -526,10 +526,10 @@ Kerjakan secara bertahap. Selesaikan dan verifikasi satu tahap sebelum melanjutk
 
 ### Repository dan runtime
 
-- [ ] Dependency root, web, dan server dapat di-install.
-- [ ] `npm run dev` menjalankan Next.js dan backend bersamaan.
-- [ ] Next.js tersedia di port 3000 dan backend di port 3001.
-- [ ] Kedua proses menampilkan log yang dapat dibedakan.
+- [x] Dependency root, web, dan server dapat di-install.
+- [x] `npm run dev` menjalankan Next.js dan backend bersamaan.
+- [x] Next.js tersedia di port 3000 dan backend di port 3001.
+- [x] Kedua proses menampilkan log yang dapat dibedakan.
 
 ### REST API dan database
 
@@ -560,7 +560,7 @@ Kerjakan secara bertahap. Selesaikan dan verifikasi satu tahap sebelum melanjutk
 - [x] CRUD dapat dilakukan dari dashboard.
 - [x] Player menampilkan konten awal (Tahap 6).
 - [x] Player memperbarui konten tanpa refresh (Tahap 6).
-- [ ] Tiga player virtual dapat berjalan bersamaan pada satu laptop (Tahap 7).
+- [x] Tiga player virtual dapat berjalan bersamaan pada satu laptop (Tahap 7).
 - [x] Loading, empty, error, dan disconnected state ditangani.
 - [x] Tidak ada secret backend di browser bundle atau repository.
 

@@ -10,9 +10,6 @@ import {
 
 const TABLE = 'devices';
 
-/**
- * Resolve a device by UUID or unique nama.
- */
 export async function findDeviceByIdOrNama(identifier: string): Promise<Device | null> {
   const supabase = getSupabase();
 
@@ -26,7 +23,6 @@ export async function findDeviceByIdOrNama(identifier: string): Promise<Device |
     return data as Device;
   }
 
-  // Lookup by nama (e.g. SIGN-001)
   const { data, error } = await supabase
     .from(TABLE)
     .select('*')
@@ -82,7 +78,7 @@ export async function updateDevice(identifier: string, dto: UpdateDeviceDto): Pr
   if (dto.lokasi !== undefined) updatePayload.lokasi = dto.lokasi;
 
   if (Object.keys(updatePayload).length === 0) {
-    return device; // Nothing to update
+    return device;
   }
 
   const { data, error } = await supabase
@@ -126,7 +122,6 @@ export async function assignContent(
 
   const supabase = getSupabase();
 
-  // Validate content exists if assigning
   let content: Content | null = null;
   if (contentId !== null) {
     const { data: contentData, error: contentError } = await supabase
@@ -141,7 +136,6 @@ export async function assignContent(
     content = contentData as Content;
   }
 
-  // Update active_content_id
   const { data: updatedDevice, error: updateError } = await supabase
     .from(TABLE)
     .update({ active_content_id: contentId })
@@ -181,10 +175,6 @@ export async function getCurrentContent(identifier: string): Promise<{
   return { device, content: content as Content };
 }
 
-/**
- * Update device status and last_seen timestamp.
- * Used by Socket.IO handlers for online/offline transitions and heartbeats.
- */
 export async function updateDeviceStatus(
   deviceId: string,
   status: DeviceStatus,
@@ -200,4 +190,3 @@ export async function updateDeviceStatus(
     throw new Error(`Failed to update device status: ${error.message}`);
   }
 }
-

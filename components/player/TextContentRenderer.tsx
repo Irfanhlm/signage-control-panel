@@ -1,7 +1,7 @@
 'use client';
 
 import { Content } from '@/lib/types';
-import { Megaphone, Sparkles } from 'lucide-react';
+import { Megaphone } from 'lucide-react';
 
 interface TextContentRendererProps {
   content: Content;

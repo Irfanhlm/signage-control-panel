@@ -1,6 +1,3 @@
-/**
- * Format UTC ISO string to local readable date and time.
- */
 export function formatDateTime(isoString: string | null | undefined): string {
   if (!isoString) return 'Belum pernah aktif';
 
@@ -21,9 +18,6 @@ export function formatDateTime(isoString: string | null | undefined): string {
   }
 }
 
-/**
- * Format relative time (e.g. "baru saja", "2 menit lalu").
- */
 export function formatTimeAgo(isoString: string | null | undefined): string {
   if (!isoString) return 'Belum pernah aktif';
 
@@ -50,4 +44,3 @@ export function formatTimeAgo(isoString: string | null | undefined): string {
     return formatDateTime(isoString);
   }
 }
-

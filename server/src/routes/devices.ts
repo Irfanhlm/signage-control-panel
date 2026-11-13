@@ -16,10 +16,7 @@ router.post('/', createDevice);
 router.get('/:id', getDevice);
 router.patch('/:id', updateDevice);
 router.delete('/:id', deleteDevice);
-
-// Assignment & player endpoints
 router.put('/:id/content', assignContent);
 router.get('/:id/current-content', getCurrentContent);
 
 export default router;
-

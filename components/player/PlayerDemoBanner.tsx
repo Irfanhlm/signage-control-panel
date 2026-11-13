@@ -30,7 +30,6 @@ export function PlayerDemoBanner({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
 
-  // Live Clock (HH:mm:ss WIB)
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
@@ -46,7 +45,6 @@ export function PlayerDemoBanner({
     return () => clearInterval(interval);
   }, []);
 
-  // Track Fullscreen state
   useEffect(() => {
     const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
@@ -66,11 +64,9 @@ export function PlayerDemoBanner({
         await document.exitFullscreen();
       }
     } catch {
-      // Ignore fullscreen errors in browsers that restrict programmatic triggers
     }
   };
 
-  // When collapsed, show tiny floating pill in bottom-left corner
   if (!isVisible) {
     return (
       <div className="fixed bottom-4 left-4 z-50 select-none">
@@ -95,7 +91,6 @@ export function PlayerDemoBanner({
   return (
     <header className="fixed top-0 inset-x-0 z-50 bg-gray-900 text-white border-b-2 border-gray-800 px-4 py-2 select-none">
       <div className="flex flex-wrap items-center justify-between gap-3 text-xs">
-        {/* Left: Device Identity & Location */}
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 font-bold text-sm tracking-wide text-white">
             <div className="w-7 h-7 rounded-md bg-blue-600 flex items-center justify-center text-white">
@@ -111,7 +106,6 @@ export function PlayerDemoBanner({
             <span className="font-semibold text-white">{device.lokasi}</span>
           </div>
 
-          {/* Connection Status Badge */}
           <div
             className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase ${
               isConnected
@@ -128,7 +122,6 @@ export function PlayerDemoBanner({
           </div>
         </div>
 
-        {/* Center: Active Content Summary */}
         <div className="hidden lg:flex items-center gap-2 text-gray-300">
           <span className="text-gray-400">Konten Aktif:</span>
           {content ? (
@@ -143,7 +136,6 @@ export function PlayerDemoBanner({
           )}
         </div>
 
-        {/* Right: Live Clock & Controls */}
         <div className="flex items-center gap-3">
           {currentTime && (
             <div className="hidden md:flex items-center gap-1.5 font-mono text-gray-300 text-xs bg-gray-800 px-2.5 py-1 rounded border border-gray-700">
@@ -152,7 +144,6 @@ export function PlayerDemoBanner({
             </div>
           )}
 
-          {/* Fullscreen Toggle */}
           <button
             type="button"
             onClick={toggleFullscreen}
@@ -166,7 +157,6 @@ export function PlayerDemoBanner({
             )}
           </button>
 
-          {/* Hide Bar */}
           <button
             type="button"
             onClick={() => setIsVisible(false)}
@@ -176,7 +166,6 @@ export function PlayerDemoBanner({
             <EyeOff className="w-4 h-4" />
           </button>
 
-          {/* Back to Dashboard */}
           <Link
             href="/dashboard"
             className="inline-flex items-center gap-1.5 px-3 py-1 bg-gray-800 hover:bg-gray-700 text-white font-medium rounded transition-all text-xs"
@@ -189,4 +178,3 @@ export function PlayerDemoBanner({
     </header>
   );
 }
-

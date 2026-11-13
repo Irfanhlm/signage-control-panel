@@ -10,11 +10,6 @@
     "build:server": "npm --prefix server run build",
     "start": "next start",
     "start:server": "npm --prefix server run start",
-    "test:db": "npm --prefix server run test:db",
-    "test:api": "npm --prefix server run test:api",
-    "test:socket": "npm --prefix server run test:socket",
-    "test:player": "npm --prefix server run test:player",
-    "test:all": "npm run test:api && npm run test:socket && npm run test:player",
     "lint": "eslint"
   },
   "dependencies": {

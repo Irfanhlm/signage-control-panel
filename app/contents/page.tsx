@@ -9,13 +9,11 @@ import { formatDateTime } from '@/lib/format';
 import { ContentFormDialog } from '@/components/ContentFormDialog';
 import { ConfirmDeleteDialog } from '@/components/ConfirmDeleteDialog';
 import {
-  FolderKanban,
   Plus,
   Search,
   ExternalLink,
   Edit2,
-  Trash2,
-  Sparkles,
+  Trash2
 } from 'lucide-react';
 
 export default function ContentsPage() {
@@ -25,20 +23,17 @@ export default function ContentsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState<string>('all');
 
-  // Dialog states
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingContent, setEditingContent] = useState<Content | null>(null);
   const [deletingContent, setDeletingContent] = useState<Content | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // Toast
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const showToast = (msg: string) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 4000);
   };
 
-  // Load data on mount
   useEffect(() => {
     let ignore = false;
     getContents()
@@ -73,7 +68,6 @@ export default function ContentsPage() {
     }
   };
 
-  // Filtered contents
   const filteredContents = useMemo(() => {
     const q = searchQuery.toLowerCase().trim();
     return contents.filter((c) => {
@@ -88,7 +82,6 @@ export default function ContentsPage() {
     });
   }, [contents, searchQuery, typeFilter]);
 
-  // CRUD Handlers
   const handleCreateOrUpdateContent = async (dto: CreateContentDto | UpdateContentDto) => {
     if (editingContent) {
       const updated = await updateContent(editingContent.id, dto);
@@ -120,15 +113,12 @@ export default function ContentsPage() {
     <div className="min-h-screen bg-white text-gray-900 flex flex-col font-sans">
       <Navbar />
 
-      {/* Toast */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 p-4 rounded-md bg-gray-900 text-white flex items-center gap-3 font-semibold text-sm">
-          <Sparkles className="w-5 h-5 text-emerald-400 shrink-0" />
           <span>{toastMessage}</span>
         </div>
       )}
 
-      {/* Section Header */}
       <section className="bg-gray-100 py-10 border-b-2 border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -152,9 +142,7 @@ export default function ContentsPage() {
         </div>
       </section>
 
-      {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-        {/* Error Notification */}
         {errorMessage && (
           <div className="p-4 bg-red-100 text-red-900 rounded-md font-semibold text-sm flex items-center justify-between">
             <span>{errorMessage}</span>
@@ -164,7 +152,6 @@ export default function ContentsPage() {
           </div>
         )}
 
-        {/* Filter & Search Bar */}
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1 max-w-2xl">
             <div className="relative flex-1">
@@ -197,7 +184,6 @@ export default function ContentsPage() {
           </div>
         </div>
 
-        {/* Contents Table */}
         <div className="bg-gray-100 rounded-lg p-6">
           <div
             tabIndex={0}
@@ -236,7 +222,6 @@ export default function ContentsPage() {
                       key={item.id}
                       className="hover:bg-blue-50/50 transition-colors duration-150"
                     >
-                      {/* Judul */}
                       <td className="py-4 px-5">
                         <span className="font-extrabold text-gray-900 block text-base">
                           {item.judul}
@@ -246,12 +231,10 @@ export default function ContentsPage() {
                         </span>
                       </td>
 
-                      {/* Tipe */}
                       <td className="py-4 px-5">
                         <ContentTypeBadge tipe={item.tipe} />
                       </td>
 
-                      {/* Preview / Payload */}
                       <td className="py-4 px-5 max-w-sm">
                         {item.tipe === 'text' && (
                           <p className="text-gray-700 text-sm line-clamp-2 font-medium">
@@ -260,7 +243,6 @@ export default function ContentsPage() {
                         )}
                         {item.tipe === 'image' && item.url && (
                           <div className="flex items-center gap-3">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                               src={item.url}
                               alt={item.judul}
@@ -307,12 +289,10 @@ export default function ContentsPage() {
                         )}
                       </td>
 
-                      {/* Tanggal Dibuat */}
                       <td className="py-4 px-5 text-gray-600 text-xs font-medium">
                         {formatDateTime(item.created_at)}
                       </td>
 
-                      {/* Aksi */}
                       <td className="py-4 px-5 text-right">
                         <div className="flex items-center justify-end gap-1.5">
                           <button
@@ -345,7 +325,6 @@ export default function ContentsPage() {
         </div>
       </main>
 
-      {/* Dialog: Create/Edit Content */}
       <ContentFormDialog
         isOpen={isFormOpen}
         content={editingContent}
@@ -356,12 +335,10 @@ export default function ContentsPage() {
         onSubmit={handleCreateOrUpdateContent}
       />
 
-      {/* Dialog: Confirm Delete */}
       <ConfirmDeleteDialog
         isOpen={!!deletingContent}
         title="Hapus Konten Media?"
         message={`Apakah Anda yakin ingin menghapus materi tayang "${deletingContent?.judul}"?`}
-        warningNote="Jika konten ini sedang aktif diputar pada suatu perangkat, sistem database akan otomatis mengosongkan (SET NULL) status konten perangkat tersebut."
         isDeleting={isDeleting}
         onConfirm={handleConfirmDelete}
         onCancel={() => setDeletingContent(null)}

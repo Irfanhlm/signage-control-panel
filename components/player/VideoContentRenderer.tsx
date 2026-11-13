@@ -83,7 +83,6 @@ export function VideoContentRenderer({ content }: VideoContentRendererProps) {
         className="w-full h-full object-contain"
       />
 
-      {/* Sound Toggle Button (Floating in bottom-right) */}
       <button
         type="button"
         onClick={toggleSound}
@@ -105,4 +104,3 @@ export function VideoContentRenderer({ content }: VideoContentRendererProps) {
     </div>
   );
 }
-

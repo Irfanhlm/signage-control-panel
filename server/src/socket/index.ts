@@ -33,13 +33,9 @@ type TypedSocket = Socket<
 let ioInstance: TypedServer | null = null;
 let sweeperInterval: ReturnType<typeof setInterval> | null = null;
 
-// ─── Sweeper Configuration ───
-const SWEEPER_INTERVAL_MS = 10_000;   // run every 10s
-const OFFLINE_THRESHOLD_S = 30;       // mark offline if last_seen > 30s ago
+const SWEEPER_INTERVAL_MS = 10_000;
+const OFFLINE_THRESHOLD_S = 30;
 
-/**
- * Initialize Socket.IO server, register event handlers and start the offline sweeper.
- */
 export function initSocketIO(httpServer: HttpServer): TypedServer {
   const io: TypedServer = new Server(httpServer, {
     cors: {
@@ -49,18 +45,15 @@ export function initSocketIO(httpServer: HttpServer): TypedServer {
     },
   });
 
-  // ─── Authentication & Device Resolution Middleware ───
   io.use(async (socket: TypedSocket, next) => {
     const deviceId = socket.handshake.auth?.deviceId as string | undefined;
     const role = socket.handshake.auth?.role as string | undefined;
 
-    // Admin / Dashboard Connection
     if (!deviceId || role === 'admin') {
       socket.data.isAdmin = true;
       return next();
     }
 
-    // Player Connection: validate device existence
     try {
       const device = await findDeviceByIdOrNama(deviceId);
       if (!device) {
@@ -82,7 +75,6 @@ export function initSocketIO(httpServer: HttpServer): TypedServer {
     handleConnection(io, socket);
   });
 
-  // Start background offline sweeper
   startSweeper(io);
 
   ioInstance = io;
@@ -96,10 +88,7 @@ export function getIO(): TypedServer {
   return ioInstance;
 }
 
-// ─── Connection Handler ───
-
 function handleConnection(io: TypedServer, socket: TypedSocket): void {
-  // ── Admin / Dashboard Connection ──
   if (socket.data.isAdmin) {
     socket.join('admin');
     console.log(`[Socket.IO] Admin connected: ${socket.id}`);
@@ -110,22 +99,18 @@ function handleConnection(io: TypedServer, socket: TypedSocket): void {
     return;
   }
 
-  // ── Player / Device Connection ──
   const resolvedId = socket.data.deviceId!;
   const deviceName = socket.data.deviceName || resolvedId;
   const roomName = `device:${resolvedId}`;
 
-  // Join room and register connection synchronously
   socket.join(roomName);
   addConnection(resolvedId, socket.id);
 
   console.log(`[Socket.IO] Player connected: ${socket.id} → device ${deviceName} (${resolvedId})`);
 
-  // Update status in DB and notify admin
   const now = new Date().toISOString();
   updateDeviceStatus(resolvedId, 'online', now)
     .then(() => {
-      // Guard against race condition: if socket disconnected before DB call finished
       if (socket.disconnected || !hasConnections(resolvedId)) {
         return;
       }
@@ -139,7 +124,6 @@ function handleConnection(io: TypedServer, socket: TypedSocket): void {
       console.error(`[Socket.IO] Error setting device ${resolvedId} online:`, err);
     });
 
-  // ── Heartbeat Handler ──
   socket.on('device:heartbeat', async () => {
     try {
       const heartbeatTime = new Date().toISOString();
@@ -154,18 +138,15 @@ function handleConnection(io: TypedServer, socket: TypedSocket): void {
     }
   });
 
-  // ── Player Ready Handler ──
   socket.on('player:ready', () => {
     console.log(`[Socket.IO] Player ready: ${socket.id} (device ${deviceName})`);
   });
 
-  // ── Disconnect Handler ──
   socket.on('disconnect', async (reason) => {
     console.log(`[Socket.IO] Player disconnected: ${socket.id} (device ${deviceName}, reason: ${reason})`);
 
     removeConnection(resolvedId, socket.id);
 
-    // Only mark offline if no active connections remain for this device
     if (!hasConnections(resolvedId)) {
       try {
         const disconnectTime = new Date().toISOString();
@@ -181,8 +162,6 @@ function handleConnection(io: TypedServer, socket: TypedSocket): void {
     }
   });
 }
-
-// ─── Offline Sweeper ───
 
 function startSweeper(io: TypedServer): void {
   if (sweeperInterval) {
@@ -204,7 +183,6 @@ async function sweepOfflineDevices(io: TypedServer): Promise<void> {
   const supabase = getSupabase();
   const threshold = new Date(Date.now() - OFFLINE_THRESHOLD_S * 1000).toISOString();
 
-  // Find devices that are marked 'online' but haven't been seen recently
   const { data: staleDevices, error } = await supabase
     .from('devices')
     .select('id, nama, last_seen')
@@ -219,7 +197,6 @@ async function sweepOfflineDevices(io: TypedServer): Promise<void> {
   if (!staleDevices || staleDevices.length === 0) return;
 
   for (const device of staleDevices) {
-    // Skip if device still has active socket connections in memory
     if (hasConnections(device.id)) continue;
 
     const now = new Date().toISOString();
@@ -235,9 +212,6 @@ async function sweepOfflineDevices(io: TypedServer): Promise<void> {
   }
 }
 
-/**
- * Stop the sweeper (useful for tests and graceful shutdown).
- */
 export function stopSweeper(): void {
   if (sweeperInterval) {
     clearInterval(sweeperInterval);

@@ -26,7 +26,6 @@ export function UrlContentRenderer({ content }: UrlContentRendererProps) {
 
   return (
     <div className="w-full h-full flex flex-col relative bg-white overflow-hidden">
-      {/* Target Iframe */}
       <iframe
         src={targetUrl}
         title={content.judul}
@@ -35,7 +34,6 @@ export function UrlContentRenderer({ content }: UrlContentRendererProps) {
         sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
       />
 
-      {/* Helpful bottom notice for iframe policies */}
       <div className="bg-gray-900 text-gray-200 px-4 py-2 flex flex-wrap items-center justify-between text-xs gap-3 border-t border-gray-800 z-10 select-none">
         <div className="flex items-center gap-2 truncate max-w-xl">
           <Globe className="w-3.5 h-3.5 text-blue-400 shrink-0" />
@@ -62,4 +60,3 @@ export function UrlContentRenderer({ content }: UrlContentRendererProps) {
     </div>
   );
 }
-

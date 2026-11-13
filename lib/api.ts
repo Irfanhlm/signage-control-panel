@@ -39,8 +39,6 @@ async function fetchJson<T>(
   return body.data as T;
 }
 
-// ─── Devices API ───
-
 export async function getDevices(): Promise<Device[]> {
   return fetchJson<Device[]>('/api/devices');
 }
@@ -93,8 +91,6 @@ export async function getCurrentContent(
   );
 }
 
-// ─── Contents API ───
-
 export async function getContents(): Promise<Content[]> {
   return fetchJson<Content[]>('/api/contents');
 }
@@ -125,4 +121,3 @@ export async function deleteContent(id: string): Promise<void> {
     method: 'DELETE',
   });
 }
-

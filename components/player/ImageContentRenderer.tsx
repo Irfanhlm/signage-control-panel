@@ -63,7 +63,6 @@ export function ImageContentRenderer({ content }: ImageContentRendererProps) {
 
   return (
     <div className="w-full h-full flex items-center justify-center bg-gray-950 p-2 sm:p-4 select-none relative overflow-hidden">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={imageUrl}
         alt={content.judul}
@@ -73,4 +72,3 @@ export function ImageContentRenderer({ content }: ImageContentRendererProps) {
     </div>
   );
 }
-

@@ -20,7 +20,6 @@ import { DeviceFormDialog } from '@/components/DeviceFormDialog';
 import { AssignContentDialog } from '@/components/AssignContentDialog';
 import { ConfirmDeleteDialog } from '@/components/ConfirmDeleteDialog';
 import {
-  MonitorPlay,
   Plus,
   Search,
   ExternalLink,
@@ -36,21 +35,18 @@ export default function DevicesPage() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Dialog states
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingDevice, setEditingDevice] = useState<Device | null>(null);
   const [assignTargetDevice, setAssignTargetDevice] = useState<Device | null>(null);
   const [deletingDevice, setDeletingDevice] = useState<Device | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // Toast
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const showToast = (msg: string) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 4000);
   };
 
-  // Load data on mount
   useEffect(() => {
     let ignore = false;
     Promise.all([getDevices(), getContents()])
@@ -90,7 +86,6 @@ export default function DevicesPage() {
     }
   };
 
-  // Real-time status update via Socket.IO
   const handleDeviceStatusChange = (event: DeviceStatusEvent) => {
     setDevices((prev) =>
       prev.map((d) =>
@@ -103,7 +98,6 @@ export default function DevicesPage() {
 
   const { isConnected: isSocketConnected } = useAdminSocket(handleDeviceStatusChange);
 
-  // Filtered devices
   const filteredDevices = useMemo(() => {
     const q = searchQuery.toLowerCase().trim();
     if (!q) return devices;
@@ -115,7 +109,6 @@ export default function DevicesPage() {
     );
   }, [devices, searchQuery]);
 
-  // CRUD Handlers
   const handleCreateOrUpdateDevice = async (dto: CreateDeviceDto | UpdateDeviceDto) => {
     if (editingDevice) {
       const updated = await updateDevice(editingDevice.id, dto);
@@ -149,10 +142,10 @@ export default function DevicesPage() {
       prev.map((d) =>
         d.id === deviceId
           ? {
-              ...d,
-              active_content_id: contentId,
-              active_content: res.content,
-            }
+            ...d,
+            active_content_id: contentId,
+            active_content: res.content,
+          }
           : d
       )
     );
@@ -167,7 +160,6 @@ export default function DevicesPage() {
     <div className="min-h-screen bg-white text-gray-900 flex flex-col font-sans">
       <Navbar isSocketConnected={isSocketConnected} />
 
-      {/* Toast */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 p-4 rounded-md bg-gray-900 text-white flex items-center gap-3 font-semibold text-sm">
           <Sparkles className="w-5 h-5 text-emerald-400 shrink-0" />
@@ -175,21 +167,13 @@ export default function DevicesPage() {
         </div>
       )}
 
-      {/* Section Header */}
       <section className="bg-gray-100 py-10 border-b-2 border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="space-y-1.5">
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-blue-600">
-                <MonitorPlay className="w-4 h-4" />
-                <span>Inventori Perangkat</span>
-              </div>
               <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
                 Daftar Layar Signage
               </h1>
-              <p className="text-sm text-gray-600 max-w-xl font-medium">
-                Kelola nama unit unik, lokasi pemasangan fisik, serta status koneksi Socket.IO real-time.
-              </p>
             </div>
 
             <button
@@ -206,9 +190,7 @@ export default function DevicesPage() {
         </div>
       </section>
 
-      {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-        {/* Error Notification */}
         {errorMessage && (
           <div className="p-4 bg-red-100 text-red-900 rounded-md font-semibold text-sm flex items-center justify-between">
             <span>{errorMessage}</span>
@@ -218,7 +200,6 @@ export default function DevicesPage() {
           </div>
         )}
 
-        {/* Filter & Search Bar */}
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
           <div className="relative flex-1 max-w-md">
             <input
@@ -236,7 +217,6 @@ export default function DevicesPage() {
           </div>
         </div>
 
-        {/* Devices Table */}
         <div className="bg-gray-100 rounded-lg p-6">
           <div
             tabIndex={0}
@@ -281,7 +261,6 @@ export default function DevicesPage() {
                         key={device.id}
                         className="hover:bg-blue-50/50 transition-colors duration-150"
                       >
-                        {/* Nama */}
                         <td className="py-4 px-5">
                           <div className="flex items-center gap-2">
                             <span className="font-extrabold text-gray-900">
@@ -301,24 +280,20 @@ export default function DevicesPage() {
                           </span>
                         </td>
 
-                        {/* Lokasi */}
                         <td className="py-4 px-5 font-semibold text-gray-700">
                           {device.lokasi}
                         </td>
 
-                        {/* Status */}
                         <td className="py-4 px-5">
                           <DeviceStatusBadge status={device.status} />
                         </td>
 
-                        {/* Last Seen */}
                         <td className="py-4 px-5 text-gray-600 text-xs font-medium">
                           <span title={formatDateTime(device.last_seen)}>
                             {formatTimeAgo(device.last_seen)}
                           </span>
                         </td>
 
-                        {/* Konten Aktif */}
                         <td className="py-4 px-5">
                           {activeContent ? (
                             <div className="flex items-center gap-2">
@@ -334,7 +309,6 @@ export default function DevicesPage() {
                           )}
                         </td>
 
-                        {/* Aksi */}
                         <td className="py-4 px-5 text-right">
                           <div className="flex items-center justify-end gap-2">
                             <button
@@ -375,7 +349,6 @@ export default function DevicesPage() {
         </div>
       </main>
 
-      {/* Dialog: Create/Edit Device */}
       <DeviceFormDialog
         isOpen={isFormOpen}
         device={editingDevice}
@@ -386,7 +359,6 @@ export default function DevicesPage() {
         onSubmit={handleCreateOrUpdateDevice}
       />
 
-      {/* Dialog: Assign Content */}
       <AssignContentDialog
         isOpen={!!assignTargetDevice}
         device={assignTargetDevice}
@@ -395,7 +367,6 @@ export default function DevicesPage() {
         onAssign={handleAssignContent}
       />
 
-      {/* Dialog: Confirm Delete */}
       <ConfirmDeleteDialog
         isOpen={!!deletingDevice}
         title="Hapus Perangkat Signage?"

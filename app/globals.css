@@ -30,19 +30,16 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Strict Zero Artificial Depth - Flat Design */
 * {
   box-shadow: none !important;
   text-shadow: none !important;
 }
 
-/* Headings: Bold / Extra Bold with tight letter spacing */
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Outfit', sans-serif;
   letter-spacing: -0.02em;
 }
 
-/* Flat button base */
 .btn-flat-primary {
   background-color: #3B82F6;
   color: #FFFFFF;
@@ -81,7 +78,6 @@ h1, h2, h3, h4, h5, h6 {
   transform: scale(1.05);
 }
 
-/* Flat Color Block Card */
 .flat-card {
   border-radius: 0.5rem;
   transition: all 0.2s ease-in-out;

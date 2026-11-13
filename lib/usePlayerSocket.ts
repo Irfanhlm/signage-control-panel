@@ -52,7 +52,6 @@ export function usePlayerSocket({
       setIsConnected(true);
       setConnectionError(null);
 
-      // Start heartbeat: send immediately once, then every 10 seconds
       if (heartbeatTimer) clearInterval(heartbeatTimer);
       socket.emit('device:heartbeat');
       heartbeatTimer = setInterval(() => {
@@ -61,7 +60,6 @@ export function usePlayerSocket({
         }
       }, 10000);
 
-      // Notify on reconnect to re-sync state from database
       if (hasConnectedOnceRef.current) {
         onReconnectRef.current?.();
       }
@@ -97,4 +95,3 @@ export function usePlayerSocket({
     connectionError,
   };
 }
-

@@ -4,7 +4,6 @@ import { ApiResponse, CreateContentDto, UpdateContentDto, isUuid } from '../type
 
 const VALID_TYPES = ['text', 'image', 'video', 'url'];
 
-// GET /api/contents
 export async function listContents(_req: Request, res: Response<ApiResponse>, next: NextFunction) {
   try {
     const contents = await contentService.listContents();
@@ -18,7 +17,6 @@ export async function listContents(_req: Request, res: Response<ApiResponse>, ne
   }
 }
 
-// POST /api/contents
 export async function createContent(req: Request, res: Response<ApiResponse>, next: NextFunction) {
   try {
     const { judul, tipe, payload, url } = req.body as CreateContentDto;
@@ -62,7 +60,6 @@ export async function createContent(req: Request, res: Response<ApiResponse>, ne
   }
 }
 
-// GET /api/contents/:id
 export async function getContent(req: Request, res: Response<ApiResponse>, next: NextFunction) {
   try {
     const { id } = req.params;
@@ -82,7 +79,6 @@ export async function getContent(req: Request, res: Response<ApiResponse>, next:
   }
 }
 
-// PATCH /api/contents/:id
 export async function updateContent(req: Request, res: Response<ApiResponse>, next: NextFunction) {
   try {
     const { id } = req.params;
@@ -137,7 +133,6 @@ export async function updateContent(req: Request, res: Response<ApiResponse>, ne
   }
 }
 
-// DELETE /api/contents/:id
 export async function deleteContent(req: Request, res: Response<ApiResponse>, next: NextFunction) {
   try {
     const { id } = req.params;
@@ -159,4 +154,3 @@ export async function deleteContent(req: Request, res: Response<ApiResponse>, ne
     next(err);
   }
 }
-

@@ -1,10 +1,3 @@
-/**
- * In-memory connection registry for tracking active Socket.IO connections per device.
- *
- * Maps deviceId (UUID) → Set of socketId strings.
- * A device is considered "connected" if it has at least one active socket.
- */
-
 const connections = new Map<string, Set<string>>();
 
 export function addConnection(deviceId: string, socketId: string): void {
@@ -40,10 +33,6 @@ export function clearRegistry(): void {
   connections.clear();
 }
 
-/**
- * Get total number of connected sockets across all devices.
- * Useful for debugging/health checks.
- */
 export function getTotalSocketCount(): number {
   let total = 0;
   for (const sockets of connections.values()) {
@@ -51,4 +40,3 @@ export function getTotalSocketCount(): number {
   }
   return total;
 }
-

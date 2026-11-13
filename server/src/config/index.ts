@@ -1,4 +1,3 @@
-
 import dotenv from 'dotenv';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -6,7 +5,6 @@ import { fileURLToPath } from 'node:url';
 const currentFile = fileURLToPath(import.meta.url);
 const currentDir = path.dirname(currentFile);
 
-// server/src/config -> server/.env
 dotenv.config({
   path: path.resolve(currentDir, '../../.env'),
 });

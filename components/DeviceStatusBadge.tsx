@@ -5,10 +5,6 @@ interface DeviceStatusBadgeProps {
   size?: 'sm' | 'md';
 }
 
-/**
- * Flat Design Device Status Tag:
- * Bold solid color blocks, zero artificial depth, crisp typography.
- */
 export function DeviceStatusBadge({ status, size = 'md' }: DeviceStatusBadgeProps) {
   const isOnline = status === 'online';
 

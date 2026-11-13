@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Content, ContentType, CreateContentDto, UpdateContentDto } from '@/lib/types';
 import { ContentTypeBadge } from './ContentTypeBadge';
-import { FolderKanban, X, Check, Eye } from 'lucide-react';
+import { X, Eye } from 'lucide-react';
 
 interface ContentFormDialogProps {
   isOpen: boolean;
@@ -115,9 +115,6 @@ function ContentFormInner({ content, onClose, onSubmit }: ContentFormInnerProps)
     <form onSubmit={handleSubmit} className="p-8 space-y-6">
       <div className="flex items-center justify-between pb-5 border-b-2 border-gray-100">
         <div className="flex items-center gap-3">
-          <div className="h-12 w-12 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center">
-            <FolderKanban className="w-6 h-6 stroke-[2.5]" />
-          </div>
           <div>
             <div className="flex items-center gap-2">
               <h3
@@ -128,9 +125,6 @@ function ContentFormInner({ content, onClose, onSubmit }: ContentFormInnerProps)
               </h3>
               <ContentTypeBadge tipe={tipe} />
             </div>
-            <p className="text-xs text-gray-500 font-semibold mt-0.5">
-              Format materi yang dapat ditayangkan di layar player
-            </p>
           </div>
         </div>
         <button
@@ -225,8 +219,8 @@ function ContentFormInner({ content, onClose, onSubmit }: ContentFormInnerProps)
                 tipe === 'image'
                   ? 'https://images.unsplash.com/photo-...'
                   : tipe === 'video'
-                  ? 'https://commondatastorage.googleapis.com/.../video.mp4'
-                  : 'https://example.com'
+                    ? 'https://commondatastorage.googleapis.com/.../video.mp4'
+                    : 'https://example.com'
               }
               value={mediaUrl}
               onChange={(e) => setMediaUrl(e.target.value)}
@@ -240,7 +234,6 @@ function ContentFormInner({ content, onClose, onSubmit }: ContentFormInnerProps)
           </div>
         )}
 
-        {/* Live Preview Block */}
         <div className="pt-2">
           <div className="flex items-center gap-2 mb-2">
             <Eye className="w-4 h-4 text-gray-500" />
@@ -256,7 +249,6 @@ function ContentFormInner({ content, onClose, onSubmit }: ContentFormInnerProps)
             )}
             {tipe === 'image' && (
               mediaUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={mediaUrl}
                   alt="Preview"
@@ -303,7 +295,6 @@ function ContentFormInner({ content, onClose, onSubmit }: ContentFormInnerProps)
           disabled={isSubmitting}
           className="flex items-center gap-2 px-6 py-3 rounded-md bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-bold transition-all duration-200 hover:scale-105 disabled:opacity-50"
         >
-          <Check className="w-4 h-4 stroke-[2.5]" />
           <span>{isSubmitting ? 'Menyimpan...' : isEdit ? 'Simpan Perubahan' : 'Buat Konten'}</span>
         </button>
       </div>
