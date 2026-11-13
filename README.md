@@ -4,7 +4,7 @@ Aplikasi web Digital Signage Control Panel untuk mengelola perangkat signage, me
 
 ---
 
-## 🏗 Arsitektur Sistem
+## Arsitektur Sistem
 
 ```text
 Admin Dashboard (Next.js) ──▶ REST API (Express) ──▶ Supabase PostgreSQL
