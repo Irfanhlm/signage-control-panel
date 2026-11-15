@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Content, CreateContentDto, UpdateContentDto } from '@/lib/types';
 import { getContents, createContent, updateContent, deleteContent } from '@/lib/api';
 import { Navbar } from '@/components/Navbar';
+import { AuthGuard } from '@/components/AuthGuard';
 import { ContentTypeBadge } from '@/components/ContentTypeBadge';
 import { formatDateTime } from '@/lib/format';
 import { ContentFormDialog } from '@/components/ContentFormDialog';
@@ -110,7 +111,8 @@ export default function ContentsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 flex flex-col font-sans">
+    <AuthGuard>
+      <div className="min-h-screen bg-white text-gray-900 flex flex-col font-sans">
       <Navbar />
 
       {toastMessage && (
@@ -344,5 +346,6 @@ export default function ContentsPage() {
         onCancel={() => setDeletingContent(null)}
       />
     </div>
-  );
+  </AuthGuard>
+);
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import { Content } from '@/lib/types';
+import { ImageContentRenderer } from './ImageContentRenderer';
 import { Globe, ExternalLink, AlertTriangle } from 'lucide-react';
 
 interface UrlContentRendererProps {
@@ -24,8 +25,14 @@ export function UrlContentRenderer({ content }: UrlContentRendererProps) {
     );
   }
 
+  const isDirectImage = /\.(jpg|jpeg|png|webp|gif|svg)(\?.*)?$/i.test(targetUrl);
+
+  if (isDirectImage) {
+    return <ImageContentRenderer content={content} />;
+  }
+
   return (
-    <div className="w-full h-full flex flex-col relative bg-white overflow-hidden">
+    <div className="w-full h-full flex-1 min-h-0 flex flex-col relative bg-white overflow-hidden">
       <iframe
         src={targetUrl}
         title={content.judul}
@@ -50,7 +57,7 @@ export function UrlContentRenderer({ content }: UrlContentRendererProps) {
             href={targetUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded transition-all hover:scale-105"
+            className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded transition-all hover:scale-105 cursor-pointer"
           >
             <span>Buka Langsung</span>
             <ExternalLink className="w-3 h-3" />

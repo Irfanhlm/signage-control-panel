@@ -8,15 +8,16 @@ import {
   assignContent,
   getCurrentContent,
 } from '../controllers/device.controller.js';
+import { authMiddleware } from '../middleware/auth.middleware.js';
 
 const router = Router();
 
-router.get('/', listDevices);
-router.post('/', createDevice);
-router.get('/:id', getDevice);
-router.patch('/:id', updateDevice);
-router.delete('/:id', deleteDevice);
-router.put('/:id/content', assignContent);
+router.get('/', authMiddleware, listDevices);
+router.post('/', authMiddleware, createDevice);
+router.get('/:id', authMiddleware, getDevice);
+router.patch('/:id', authMiddleware, updateDevice);
+router.delete('/:id', authMiddleware, deleteDevice);
+router.put('/:id/content', authMiddleware, assignContent);
 router.get('/:id/current-content', getCurrentContent);
 
 export default router;

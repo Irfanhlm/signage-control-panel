@@ -70,3 +70,14 @@ export interface DeviceStatusEvent {
   last_seen: string | null;
 }
 
+export interface AdminUser {
+  id: string;
+  username: string;
+  nama: string;
+  role: 'admin';
+}
+
+export interface LoginResult {
+  token: string;
+  admin: AdminUser;
+}

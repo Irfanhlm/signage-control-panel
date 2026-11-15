@@ -41,13 +41,31 @@ BEFORE UPDATE ON devices
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
+CREATE TABLE IF NOT EXISTS admins (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    username TEXT NOT NULL UNIQUE,
+    password_hash TEXT NOT NULL,
+    nama TEXT NOT NULL,
+    role TEXT NOT NULL DEFAULT 'admin',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now()),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
+);
+
+DROP TRIGGER IF EXISTS set_admins_updated_at ON admins;
+CREATE TRIGGER set_admins_updated_at
+BEFORE UPDATE ON admins
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
 CREATE INDEX IF NOT EXISTS idx_devices_nama ON devices(nama);
 CREATE INDEX IF NOT EXISTS idx_devices_status ON devices(status);
 CREATE INDEX IF NOT EXISTS idx_devices_active_content ON devices(active_content_id);
 CREATE INDEX IF NOT EXISTS idx_contents_tipe ON contents(tipe);
+CREATE INDEX IF NOT EXISTS idx_admins_username ON admins(username);
 
 ALTER TABLE contents ENABLE ROW LEVEL SECURITY;
 ALTER TABLE devices ENABLE ROW LEVEL SECURITY;
+ALTER TABLE admins ENABLE ROW LEVEL SECURITY;
 
 INSERT INTO contents (id, judul, tipe, payload, url)
 VALUES

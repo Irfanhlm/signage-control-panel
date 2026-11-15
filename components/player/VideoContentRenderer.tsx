@@ -8,11 +8,20 @@ interface VideoContentRendererProps {
   content: Content;
 }
 
+function extractYouTubeId(url: string): string | null {
+  if (!url) return null;
+  const regExp = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=|shorts\/)|youtu\.be\/)([^"&?\/\s]{11})/i;
+  const match = url.match(regExp);
+  return match && match[1].length === 11 ? match[1] : null;
+}
+
 export function VideoContentRenderer({ content }: VideoContentRendererProps) {
   const [hasError, setHasError] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoUrl = content.url || (content.payload?.url as string) || '';
+
+  const youtubeId = extractYouTubeId(videoUrl);
 
   const toggleSound = () => {
     if (videoRef.current) {
@@ -23,7 +32,7 @@ export function VideoContentRenderer({ content }: VideoContentRendererProps) {
 
   if (!videoUrl) {
     return (
-      <div className="w-full h-full flex flex-col items-center justify-center bg-gray-100 p-8 text-center">
+      <div className="w-full h-full flex flex-col items-center justify-center bg-gray-100 p-8 text-center select-none">
         <div className="w-16 h-16 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mb-4">
           <VideoOff className="w-8 h-8" />
         </div>
@@ -37,7 +46,7 @@ export function VideoContentRenderer({ content }: VideoContentRendererProps) {
 
   if (hasError) {
     return (
-      <div className="w-full h-full flex flex-col items-center justify-center bg-black text-white p-8 text-center">
+      <div className="w-full h-full flex flex-col items-center justify-center bg-black text-white p-8 text-center select-none">
         <div className="w-16 h-16 rounded-full bg-red-900 text-red-200 flex items-center justify-center mb-4">
           <VideoOff className="w-8 h-8" />
         </div>
@@ -51,7 +60,7 @@ export function VideoContentRenderer({ content }: VideoContentRendererProps) {
         <div className="flex items-center gap-3">
           <button
             onClick={() => setHasError(false)}
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-md transition-all hover:scale-105"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-md transition-all hover:scale-105 cursor-pointer"
           >
             <RotateCw className="w-4 h-4" />
             Coba Putar Ulang
@@ -60,7 +69,7 @@ export function VideoContentRenderer({ content }: VideoContentRendererProps) {
             href={videoUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-800 hover:bg-gray-700 text-white text-sm font-semibold rounded-md transition-all"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-800 hover:bg-gray-700 text-white text-sm font-semibold rounded-md transition-all cursor-pointer"
           >
             <ExternalLink className="w-4 h-4" />
             Buka URL Langsung
@@ -70,8 +79,24 @@ export function VideoContentRenderer({ content }: VideoContentRendererProps) {
     );
   }
 
+  if (youtubeId) {
+    const embedUrl = `https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&mute=1&loop=1&playlist=${youtubeId}&controls=1&modestbranding=1&rel=0&iv_load_policy=3`;
+
+    return (
+      <div className="w-full h-full flex-1 min-h-0 flex items-center justify-center bg-black relative select-none overflow-hidden">
+        <iframe
+          src={embedUrl}
+          title={content.judul}
+          className="w-full h-full border-0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+        />
+      </div>
+    );
+  }
+
   return (
-    <div className="w-full h-full flex items-center justify-center bg-black relative select-none overflow-hidden">
+    <div className="w-full h-full flex-1 min-h-0 flex items-center justify-center bg-black relative select-none overflow-hidden">
       <video
         ref={videoRef}
         src={videoUrl}
@@ -86,19 +111,13 @@ export function VideoContentRenderer({ content }: VideoContentRendererProps) {
       <button
         type="button"
         onClick={toggleSound}
-        className="absolute bottom-6 right-6 z-20 inline-flex items-center gap-2 px-4 py-2 bg-gray-900/90 hover:bg-gray-900 text-white text-xs font-semibold rounded-full border border-gray-700 transition-all hover:scale-105"
+        className="absolute bottom-6 right-6 z-20 inline-flex items-center gap-2 px-4 py-2 bg-gray-900/90 hover:bg-gray-900 text-white text-xs font-semibold rounded-full border border-gray-700 transition-all hover:scale-105 cursor-pointer shadow-none"
         title={isMuted ? 'Aktifkan Suara' : 'Bisukan Suara'}
       >
         {isMuted ? (
-          <>
-            <VolumeX className="w-4 h-4 text-amber-400" />
-            <span>Muted (Klik untuk Suara)</span>
-          </>
+          <VolumeX className="w-4 h-4 text-amber-400" />
         ) : (
-          <>
-            <Volume2 className="w-4 h-4 text-emerald-400" />
-            <span>Suara Aktif</span>
-          </>
+          <Volume2 className="w-4 h-4 text-emerald-400" />
         )}
       </button>
     </div>

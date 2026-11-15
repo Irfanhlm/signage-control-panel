@@ -12,6 +12,13 @@ interface ContentFormDialogProps {
   onSubmit: (dto: CreateContentDto | UpdateContentDto) => Promise<void>;
 }
 
+function extractYouTubeId(url: string): string | null {
+  if (!url) return null;
+  const regExp = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=|shorts\/)|youtu\.be\/)([^"&?\/\s]{11})/i;
+  const match = url.match(regExp);
+  return match && match[1].length === 11 ? match[1] : null;
+}
+
 export function ContentFormDialog({
   isOpen,
   content,
@@ -219,13 +226,18 @@ function ContentFormInner({ content, onClose, onSubmit }: ContentFormInnerProps)
                 tipe === 'image'
                   ? 'https://images.unsplash.com/photo-...'
                   : tipe === 'video'
-                    ? 'https://commondatastorage.googleapis.com/.../video.mp4'
+                    ? 'https://www.youtube.com/watch?v=... atau file .mp4'
                     : 'https://example.com'
               }
               value={mediaUrl}
               onChange={(e) => setMediaUrl(e.target.value)}
               className="w-full px-4 py-3 bg-gray-100 rounded-md text-sm font-mono text-gray-900 placeholder-gray-400 focus:bg-white focus:outline-none focus:border-2 focus:border-blue-500 transition-all duration-200"
             />
+            {tipe === 'video' && (
+              <p className="text-xs text-blue-700 mt-1.5 font-medium">
+                Mendukung tautan YouTube (Watch, Shorts, Share) serta direct URL file video (.mp4/.webm).
+              </p>
+            )}
             {tipe === 'url' && (
               <p className="text-xs text-amber-700 mt-1.5 font-medium">
                 Catatan: Pastikan situs web tujuan mengizinkan penayangan dalam iframe.
@@ -263,9 +275,24 @@ function ContentFormInner({ content, onClose, onSubmit }: ContentFormInnerProps)
             )}
             {tipe === 'video' && (
               mediaUrl ? (
-                <video src={mediaUrl} className="max-h-40 rounded-md" controls muted />
+                extractYouTubeId(mediaUrl) ? (
+                  <div className="relative max-h-40 rounded-md overflow-hidden flex items-center justify-center">
+                    <img
+                      src={`https://img.youtube.com/vi/${extractYouTubeId(mediaUrl)}/mqdefault.jpg`}
+                      alt="YouTube Preview"
+                      className="max-h-40 rounded-md object-cover"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/40">
+                      <span className="px-3 py-1 bg-red-600 text-white text-xs font-bold rounded-md">
+                        YouTube Video
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <video src={mediaUrl} className="max-h-40 rounded-md" controls muted />
+                )
               ) : (
-                <span className="text-xs text-gray-500 font-semibold">[Masukkan URL video direct .mp4]</span>
+                <span className="text-xs text-gray-500 font-semibold">[Masukkan URL YouTube atau video .mp4]</span>
               )
             )}
             {tipe === 'url' && (

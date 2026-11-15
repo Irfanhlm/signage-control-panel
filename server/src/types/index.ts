@@ -84,6 +84,22 @@ export interface SocketData {
   isAdmin?: boolean;
 }
 
+export interface AdminUser {
+  id: string;
+  username: string;
+  nama: string;
+  role: 'admin';
+}
+
+export interface AuthTokenPayload {
+  sub: string;
+  username: string;
+  nama: string;
+  role: 'admin';
+  iat?: number;
+  exp?: number;
+}
+
 export function isUuid(id: string): boolean {
   const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
   return uuidRegex.test(id);

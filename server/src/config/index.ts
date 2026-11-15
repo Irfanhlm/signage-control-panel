@@ -16,6 +16,10 @@ export interface AppConfig {
   supabaseServiceRoleKey: string;
   heartbeatIntervalMs: number;
   deviceOfflineTimeoutMs: number;
+  jwtSecret: string;
+  adminUsername: string;
+  adminPassword: string;
+  adminName: string;
 }
 
 export const config: AppConfig = {
@@ -31,4 +35,8 @@ export const config: AppConfig = {
     process.env.DEVICE_OFFLINE_TIMEOUT_MS || '30000',
     10
   ),
+  jwtSecret: process.env.JWT_SECRET || 'signage-control-panel-secret-jwt-key-2026',
+  adminUsername: process.env.ADMIN_USERNAME || 'admin',
+  adminPassword: process.env.ADMIN_PASSWORD || 'admin123',
+  adminName: process.env.ADMIN_NAME || 'Administrator',
 };

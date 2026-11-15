@@ -1,7 +1,6 @@
 'use client';
 
 import { Content } from '@/lib/types';
-import { Megaphone } from 'lucide-react';
 
 interface TextContentRendererProps {
   content: Content;
@@ -14,7 +13,7 @@ export function TextContentRenderer({ content }: TextContentRendererProps) {
       : content.judul;
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center p-8 sm:p-12 md:p-16 lg:p-24 bg-white relative overflow-hidden select-none">
+    <div className="w-full h-full flex-1 min-h-0 flex flex-col items-center justify-center p-8 sm:p-12 md:p-16 lg:p-24 bg-white relative overflow-hidden select-none">
 
       <div
         className="absolute -top-16 -right-16 w-64 h-64 bg-blue-50 rounded-full pointer-events-none"
@@ -30,12 +29,6 @@ export function TextContentRenderer({ content }: TextContentRendererProps) {
       />
 
       <div className="relative z-10 max-w-5xl w-full flex flex-col items-center text-center">
-
-        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-blue-600 text-white text-xs sm:text-sm font-semibold tracking-wider uppercase mb-8">
-          <Megaphone className="w-4 h-4" />
-          <span>Pengumuman Digital</span>
-        </div>
-
 
         {content.judul && content.payload?.text && (
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-500 uppercase tracking-wider mb-6">

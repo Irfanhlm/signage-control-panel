@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Device, CreateDeviceDto, UpdateDeviceDto } from '@/lib/types';
-import { X, Check } from 'lucide-react';
+import { X } from 'lucide-react';
 
 interface DeviceFormDialogProps {
   isOpen: boolean;
@@ -178,7 +178,6 @@ function DeviceFormInner({ device, onClose, onSubmit }: DeviceFormInnerProps) {
           disabled={isSubmitting}
           className="flex items-center gap-2 px-6 py-3 rounded-md bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold transition-all duration-200 hover:scale-105 disabled:opacity-50"
         >
-          <Check className="w-4 h-4 stroke-[2.5]" />
           <span>{isSubmitting ? 'Menyimpan...' : isEdit ? 'Simpan Perubahan' : 'Buat Perangkat'}</span>
         </button>
       </div>

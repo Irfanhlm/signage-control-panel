@@ -9,12 +9,19 @@ const eslintConfig = defineConfig([
     ".next/**",
     "out/**",
     "build/**",
+    "dist-electron/**",
     "next-env.d.ts",
     "server/**",
   ]),
   {
     rules: {
       "@next/next/no-img-element": "off",
+    },
+  },
+  {
+    files: ["electron/**"],
+    rules: {
+      "@typescript-eslint/no-require-imports": "off",
     },
   },
 ]);

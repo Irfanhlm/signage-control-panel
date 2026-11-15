@@ -6,14 +6,14 @@ import {
   updateContent,
   deleteContent,
 } from '../controllers/content.controller.js';
+import { authMiddleware } from '../middleware/auth.middleware.js';
 
 const router = Router();
 
-router.get('/', listContents);
-router.post('/', createContent);
-router.get('/:id', getContent);
-router.patch('/:id', updateContent);
-router.delete('/:id', deleteContent);
+router.get('/', authMiddleware, listContents);
+router.post('/', authMiddleware, createContent);
+router.get('/:id', authMiddleware, getContent);
+router.patch('/:id', authMiddleware, updateContent);
+router.delete('/:id', authMiddleware, deleteContent);
 
 export default router;
-

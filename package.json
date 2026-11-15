@@ -2,15 +2,42 @@
   "name": "signage-control-panel",
   "version": "0.1.0",
   "private": true,
+  "main": "electron/main.js",
   "scripts": {
     "dev": "concurrently -k -p \"[{name}]\" -n \"NEXT,EXPRESS\" -c \"cyan.bold,magenta.bold\" \"npm run dev:web\" \"npm run dev:server\"",
     "dev:web": "next dev",
     "dev:server": "npm --prefix server run dev",
     "build": "next build",
     "build:server": "npm --prefix server run build",
+    "build:electron": "electron-builder --dir",
+    "dist:electron": "electron-builder",
+    "electron": "electron .",
+    "electron:dev": "concurrently -k -p \"[{name}]\" -n \"NEXT,EXPRESS,ELECTRON\" -c \"cyan.bold,magenta.bold,yellow.bold\" \"npm run dev:web\" \"npm run dev:server\" \"wait-on http://localhost:3000 && electron .\"",
     "start": "next start",
     "start:server": "npm --prefix server run start",
     "lint": "eslint"
+  },
+  "build": {
+    "appId": "com.signage.controlpanel",
+    "productName": "Signage Control Panel",
+    "directories": {
+      "output": "dist-electron"
+    },
+    "files": [
+      "electron/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "target": [
+        "dir",
+        "dmg"
+      ],
+      "category": "public.app-category.utilities",
+      "identity": null
+    },
+    "dmg": {
+      "title": "Signage Control Panel"
+    }
   },
   "dependencies": {
     "lucide-react": "^1.72.0",
@@ -25,9 +52,12 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "concurrently": "^10.0.7",
+    "electron": "^45.3.2",
+    "electron-builder": "^26.18.0",
     "eslint": "^9",
     "eslint-config-next": "16.4.6",
     "tailwindcss": "4.3.3",
-    "typescript": "^5"
+    "typescript": "^5",
+    "wait-on": "^9.5.1"
   }
 }
