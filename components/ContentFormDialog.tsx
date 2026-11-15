@@ -233,11 +233,6 @@ function ContentFormInner({ content, onClose, onSubmit }: ContentFormInnerProps)
               onChange={(e) => setMediaUrl(e.target.value)}
               className="w-full px-4 py-3 bg-gray-100 rounded-md text-sm font-mono text-gray-900 placeholder-gray-400 focus:bg-white focus:outline-none focus:border-2 focus:border-blue-500 transition-all duration-200"
             />
-            {tipe === 'video' && (
-              <p className="text-xs text-blue-700 mt-1.5 font-medium">
-                Mendukung tautan YouTube (Watch, Shorts, Share) serta direct URL file video (.mp4/.webm).
-              </p>
-            )}
             {tipe === 'url' && (
               <p className="text-xs text-amber-700 mt-1.5 font-medium">
                 Catatan: Pastikan situs web tujuan mengizinkan penayangan dalam iframe.

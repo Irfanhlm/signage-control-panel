@@ -187,6 +187,20 @@ function setupMenu() {
       ],
     }] : []),
     {
+      label: 'Edit',
+      submenu: [
+        { role: 'undo' },
+        { role: 'redo' },
+        { type: 'separator' },
+        { role: 'cut' },
+        { role: 'copy' },
+        { role: 'paste' },
+        { role: 'pasteAndMatchStyle' },
+        { role: 'delete' },
+        { role: 'selectAll' },
+      ],
+    },
+    {
       label: 'Navigasi',
       submenu: [
         {
@@ -296,6 +310,56 @@ function createWindow() {
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url);
     return { action: 'deny' };
+  });
+
+  mainWindow.webContents.on('context-menu', (event, params) => {
+    const contextMenuTemplate = [];
+    if (params.isEditable) {
+      contextMenuTemplate.push(
+        { role: 'undo' },
+        { role: 'redo' },
+        { type: 'separator' },
+        { role: 'cut' },
+        { role: 'copy' },
+        { role: 'paste' },
+        { role: 'pasteAndMatchStyle' },
+        { role: 'delete' },
+        { type: 'separator' },
+        { role: 'selectAll' }
+      );
+    } else if (params.selectionText && params.selectionText.trim().length > 0) {
+      contextMenuTemplate.push(
+        { role: 'copy' },
+        { type: 'separator' },
+        { role: 'selectAll' }
+      );
+    }
+    if (contextMenuTemplate.length > 0) {
+      const contextMenu = Menu.buildFromTemplate(contextMenuTemplate);
+      contextMenu.popup({ window: mainWindow });
+    }
+  });
+
+  mainWindow.webContents.on('before-input-event', (event, input) => {
+    const isModifier = process.platform === 'darwin' ? input.meta : input.control;
+    if (isModifier && input.type === 'keyDown') {
+      const key = input.key.toLowerCase();
+      if (key === 'c') {
+        mainWindow.webContents.copy();
+      } else if (key === 'v') {
+        mainWindow.webContents.paste();
+      } else if (key === 'x') {
+        mainWindow.webContents.cut();
+      } else if (key === 'a') {
+        mainWindow.webContents.selectAll();
+      } else if (key === 'z') {
+        if (input.shift) {
+          mainWindow.webContents.redo();
+        } else {
+          mainWindow.webContents.undo();
+        }
+      }
+    }
   });
 
   setupMenu();

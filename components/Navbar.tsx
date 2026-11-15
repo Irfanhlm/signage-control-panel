@@ -1,10 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { getAuthUser, clearAuth } from '@/lib/api';
-import { AdminUser } from '@/lib/types';
+import { clearAuth } from '@/lib/api';
 import { ConfirmLogoutDialog } from '@/components/ConfirmLogoutDialog';
 import { LogOut } from 'lucide-react';
 
@@ -15,20 +14,7 @@ interface NavbarProps {
 export function Navbar({ isSocketConnected }: NavbarProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const [user, setUser] = useState<AdminUser | null>(null);
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
-
-  useEffect(() => {
-    let mounted = true;
-    Promise.resolve().then(() => {
-      if (mounted) {
-        setUser(getAuthUser());
-      }
-    });
-    return () => {
-      mounted = false;
-    };
-  }, []);
 
   const handleConfirmLogout = () => {
     setIsLogoutDialogOpen(false);

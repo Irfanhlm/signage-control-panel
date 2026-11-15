@@ -23,7 +23,7 @@ Admin Dashboard (Next.js / Electron) ──▶ REST API (Express) ──▶ Supa
 
 ---
 
-## 🔐 Autentikasi Admin (JWT)
+## Autentikasi Admin (JWT)
 
 Akses dashboard admin dilindungi dengan token JWT:
 
