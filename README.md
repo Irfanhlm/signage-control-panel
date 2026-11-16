@@ -16,11 +16,12 @@ Admin Dashboard (Next.js) ──▶ REST API (Express) ──▶ Supabase Postgr
 
 - **Frontend (Web):** Next.js (App Router), Tailwind CSS v4, TypeScript
 - **Backend (Server):** Node.js, Express, Socket.IO, TypeScript
+- **Desktop Application:** Electron.js
 - **Database:** Supabase PostgreSQL
 
 ---
 
-## 📁 Struktur Direktori
+## Struktur Direktori
 
 ```text
 signage-control-panel/
@@ -92,5 +93,6 @@ Perintah ini akan menjalankan Next.js di port **3000** dan backend Express + Soc
 Atau jika ingin menjalankan secara terpisah:
 - Terminal 1 (Backend): `npm run dev:server` (http://localhost:3001)
 - Terminal 2 (Frontend): `npm run dev:web` (http://localhost:3000)
+- Terminal 3 (Desktop App): `npm run electron:dev`
 
 ---
