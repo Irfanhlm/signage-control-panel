@@ -40,7 +40,7 @@ Akses dashboard admin dilindungi dengan token JWT:
 
 ---
 
-## 📁 Struktur Direktori
+## Struktur Direktori
 
 ```text
 signage-control-panel/
